@@ -25,4 +25,12 @@ public class ScheduledJob extends Job {
         this(j.getProduct(), j.getType(), j.getQuantity(), j.getDueDate());
         this.next = job;
     }
+
+    public ScheduledJob getNext() {
+        return next;
+    }
+
+    public void setNext(ScheduledJob next) {
+        this.next = next;
+    }
 }

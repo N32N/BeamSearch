@@ -7,16 +7,29 @@ import Instance.*;
  */
 public class Solution {
     private Instance instance;
+    private ScheduledJob first;
+    private ScheduledJob second;
 
     public Instance getInstance() {
         return instance;
     }
 
-    private ScheduledJob first;
-    private ScheduledJob second;
+    public ScheduledJob getFirst() {
+        return first;
+    }
+
+    public ScheduledJob getSecond() {
+        return second;
+    }
 
     public Solution(Instance instance) {
         this.instance = instance;
+        int i = instance.getNbM1();
+        Mark mLast = new Mark(i, null);
+        Mark m = mLast;
+        while(i>0){
+            i--;
+        }
         //Mettre les marqueurs dans les deux ordos
     }
 
