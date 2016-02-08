@@ -8,21 +8,21 @@ import Instance.Job;
 public class ScheduledJob extends Job {
     private ScheduledJob next;
 
-    public ScheduledJob(int p, int t, int q, int d) {
-        super(p, t, q, d);
+    public ScheduledJob(int number, int p, int t, int q, int d) {
+        super(number, p, t, q, d);
     }
 
-    public ScheduledJob(int p, int t, int q, int d, ScheduledJob job) {
-        this(p, t, q, d);
+    public ScheduledJob(int number, int p, int t, int q, int d, ScheduledJob job) {
+        this(number, p, t, q, d);
         this.next = job;
     }
 
     public ScheduledJob(Job j) {
-        this(j.getProduct(), j.getType(), j.getQuantity(), j.getDueDate());
+        this(j.getNumber(), j.getProduct(), j.getType(), j.getQuantity(), j.getDueDate());
     }
 
     public ScheduledJob(Job j, ScheduledJob job) {
-        this(j.getProduct(), j.getType(), j.getQuantity(), j.getDueDate());
+        this(j.getNumber(), j.getProduct(), j.getType(), j.getQuantity(), j.getDueDate());
         this.next = job;
     }
 

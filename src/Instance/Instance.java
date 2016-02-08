@@ -126,19 +126,20 @@ public class Instance {
         }
 
         this.setUpTimeM = new int[nbM1];
-        this.setUpTimeM[0] = 2;
-
+        for (int i = 0; i < nbM1; i++) {
+            this.setUpTimeM[i] = 1;
+        }
         this.setUpTimeF = new int[nbM2];
         for (int i = 0; i < nbM2; i++) {
             this.setUpTimeF[i] = 1;
         }
 
         this.jobs = new Job[nbJob];//Convention : Job 0 n'est pas utilis�, Commande vide
-        this.jobs[0] = new Job(0, 0, 1, 20);
-        this.jobs[1] = new Job(1, 2, 2, 20);
-        this.jobs[2] = new Job(3, 1, 3, 20);
-        this.jobs[3] = new Job(1, 4, 3, 20);
-        this.jobs[4] = new Job(2, 2, 4, 20);
+        this.jobs[0] = new Job(1, 0, 0, 1, 20);
+        this.jobs[1] = new Job(2, 1, 2, 2, 20);
+        this.jobs[2] = new Job(3, 3, 1, 3, 20);
+        this.jobs[3] = new Job(4, 1, 4, 3, 20);
+        this.jobs[4] = new Job(5, 2, 2, 4, 20);
 
     }
 

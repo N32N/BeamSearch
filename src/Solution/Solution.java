@@ -24,13 +24,22 @@ public class Solution {
 
     public Solution(Instance instance) {
         this.instance = instance;
+
         int i = instance.getNbM1();
-        Mark mLast = new Mark(i, null);
-        Mark m = mLast;
-        while(i>0){
+        Mark m = new Mark(i, null);
+        while(i>1){
             i--;
+            m = new Mark(i, m);
         }
-        //Mettre les marqueurs dans les deux ordos
+        this.first=m;
+
+        int i2 = instance.getNbM2();
+        Mark m2 = new Mark(i2, null);
+        while(i2>1){
+            i2--;
+            m2 = new Mark(i2, m2);
+        }
+        this.second=m2;
     }
 
     public int getLastJobM(int machine) {
@@ -43,10 +52,18 @@ public class Solution {
 
     public void print() {
         //TODO
-        System.out.println("M");
-        //parcourir le premier ordo
-        System.out.println("F");
-        //parcourir le second ordo
+        System.out.println("_____M_____");
+        ScheduledJob current = first;
+        while(current!=null){
+            System.out.println("number "+current.getNumber());
+            current=current.getNext();
+        }
+        System.out.println("_____F_____");
+        ScheduledJob current2 = second;
+        while(current2!=null){
+            System.out.println("number "+current2.getNumber());
+            current2=current2.getNext();
+        }
     }
 
     /**

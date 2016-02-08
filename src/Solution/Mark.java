@@ -7,7 +7,7 @@ public class Mark extends ScheduledJob {
     private int machine;
 
     public Mark(int machine, ScheduledJob next) {
-        super(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, next);
+        super(-machine, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, next);
         this.machine = machine;
     }
 }

@@ -8,8 +8,10 @@ public class Job {
     public int type;
     public int quantity;
     public int dueDate;
+    public int number;
 
-    public Job(int p, int t, int q, int d) {
+    public Job(int number, int p, int t, int q, int d) {
+        this.number=number;
         this.product = p;
         this.type = t;
         this.quantity = q;
@@ -46,5 +48,13 @@ public class Job {
 
     public void setProduct(int product) {
         this.product = product;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }
