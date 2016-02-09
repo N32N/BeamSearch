@@ -144,6 +144,25 @@ public class Instance {
     }
 
     /**
+     * Instance aléatoire
+     * @param M : number at first floor
+     * @param F : number at second floor
+     * @param nbJob
+     * @param nbProd
+     * @param nbTypes
+     */
+    public Instance (int M, int F, int nbJob, int nbProd, int nbTypes){
+        this.nbM1=M;
+        this.nbM2=F;
+        this.nbJob=nbJob;
+        this.nbProd=nbProd;
+        this.nbTypes=nbTypes;
+
+        //randomize what's next...
+        //TODO
+    }
+
+    /**
      * ------------------A FAIRE-----------------------------
      * Lis l'instance � partir de son nom, et set les donn�es dans les variables d'instances
      */
