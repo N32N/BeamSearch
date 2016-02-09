@@ -16,7 +16,7 @@ public class Instance {
     private int nbTypes;//nb de types
 
     int[][] setUp;//nbProd*nbProd, setUp[i][j]=1 si il faut un set-up entre le produit i et le produit j (i avant, j apr�s)
-    int[][] duration;//nbM2*nbTypes, �gal � la vitesse de production de la machine f pour le type t
+    double[][] duration;//nbM2*nbTypes, �gal � (1 / vitesse de production de la machine f pour le type t), donc Tprocess=quantity*duration.
     int[] setUpTimeM;//nbM1, �gal au temps de set-up de la machine m
     int[] setUpTimeF;//nbM2, �gal au temps de set-up de la machine f
     Job[] jobs;//nbJob, Liste des jobs alias commandes
@@ -54,11 +54,11 @@ public class Instance {
         return getSetUp()[i][j];
     }
 
-    public int[][] getDuration() {
+    public double[][] getDuration() {
         return duration;
     }
 
-    public int getDuration(int i, int j) {
+    public double getDuration(int i, int j) {
         return getDuration()[i][j];
     }
 
@@ -118,7 +118,7 @@ public class Instance {
             }
         }
 
-        this.duration = new int[nbM2][nbTypes];
+        this.duration = new double[nbM2][nbTypes];
         for (int i = 0; i < nbM2; i++) {
             for (int j = 0; j < nbTypes; j++) {
                 this.duration[i][j] = 1;
@@ -145,21 +145,43 @@ public class Instance {
 
     /**
      * Instance aléatoire
-     * @param M : number at first floor
-     * @param F : number at second floor
+     *
+     * @param M       : number at first floor
+     * @param F       : number at second floor
      * @param nbJob
      * @param nbProd
      * @param nbTypes
      */
-    public Instance (int M, int F, int nbJob, int nbProd, int nbTypes){
-        this.nbM1=M;
-        this.nbM2=F;
-        this.nbJob=nbJob;
-        this.nbProd=nbProd;
-        this.nbTypes=nbTypes;
+    public Instance(int M, int F, int nbJob, int nbProd, int nbTypes) {
+        this.nbM1 = M;
+        this.nbM2 = F;
+        this.nbJob = nbJob;
+        this.nbProd = nbProd;
+        this.nbTypes = nbTypes;
 
-        //randomize what's next...
-        //TODO
+        this.setUp = new int[nbProd][nbProd];
+        for (int i = 0; i < nbProd; i++)
+            for (int j = 0; j < nbProd; j++)
+                if (i == j) this.setUp[i][j] = 0;
+                else this.setUp[i][j] = (int) Math.random();
+
+        this.duration = new double[nbM2][nbTypes];
+        for (int i = 0; i < nbM2; i++)
+            for (int j = 0; j < nbTypes; j++)
+                this.duration[i][j] = (0.5 + (2 * Math.random()));
+
+        this.setUpTimeM = new int[nbM1];
+        for (int i = 0; i < nbM1; i++)
+            this.setUpTimeM[i] = (int) (1 + 4 * Math.random());
+
+        this.setUpTimeF = new int[nbM2];
+        for (int i = 0; i < nbM2; i++)
+            this.setUpTimeF[i] = (int) (1 + 4 * Math.random());
+
+
+        this.jobs = new Job[nbJob];
+        for (int i = 0; i < nbJob; i++)
+            this.jobs[i] = new Job(i+1, (int)(nbProd*Math.random()), (int)(nbTypes*Math.random()), (int)(2+18*Math.random()), (int)(3*i+5*Math.random()));
     }
 
     /**
