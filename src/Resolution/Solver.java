@@ -2,7 +2,6 @@ package Resolution;
 
 import Instance.*;
 import Solution.Solution;
-
 import java.util.ArrayList;
 
 /**
