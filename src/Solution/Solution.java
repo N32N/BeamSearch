@@ -68,7 +68,16 @@ public class Solution {
             last.setNext(job);
         }
     }
-
+    public void addJob(Job job, int stage, int machine) {
+        if (stage == 1) {
+            ScheduledJob last = getLastJobFirstFloor(machine);
+            last.setNext(new ScheduledJob(job, last.getNext()));
+        }
+        if (stage == 2) {
+            ScheduledJob last = getLastJobSecondFloor(machine);
+            last.setNext(new ScheduledJob(job, last.getNext()));
+        }
+    }
     public void print() {
         System.out.println("_____M_____");
         ScheduledJob current = first;

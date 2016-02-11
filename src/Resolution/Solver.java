@@ -1,8 +1,9 @@
 package Resolution;
 
 import Instance.*;
-import Solution.Solution;
+import Solution.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by n on 08/02/16.
@@ -66,6 +67,7 @@ public class Solver {
         for (int j = 0; j < earliestFree.length; j++) earliestFree[j] = 0;
         for (int j = 0; j < jobs.length; j++) {
             int index = getMinIndex(dd);
+            System.out.println("job : "+index+", "+dd[index]);
             this.place(s, jobs[index]);
             dd[index] = Integer.MAX_VALUE;
         }
@@ -78,7 +80,9 @@ public class Solver {
      * @param job
      */
     private void place(Solution s, Job job) {
-        //TODO
+        int[] dateDispo = new int[instance.getNbM1()];
+        int firstAvailable = getMinIndex(dateDispo)+1;//Car pas de machine 0
+        s.addJob(job, 1, firstAvailable);
     }
 
     public void second(Solution s, Job[] jobs) {
@@ -135,7 +139,10 @@ public class Solver {
      * @return the index of the minimum value in tab
      */
     public int getMinIndex(int[] tab) {
-        //TODO
-        return 10000;
+        int minIndex=0;
+        for(int i=1; i<tab.length;i++){
+            if(tab[i]<tab[minIndex]) minIndex =i;
+        }
+        return minIndex;
     }
 }
