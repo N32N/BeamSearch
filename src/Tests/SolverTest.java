@@ -12,6 +12,8 @@ public class SolverTest {
     public static void main(String[] args){
         Solver solver = new Solver(new Instance());
         Solution solution = solver.firstSolution();
+        Solution solution2 = solution.clone();
         solution.print();
+        solution2.print();
     }
 }

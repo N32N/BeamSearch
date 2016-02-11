@@ -18,5 +18,6 @@ public class SolutionTest {
         System.out.println("last second 3 : "+test.getLastJobSecondFloor(3));
         System.out.println("last first 1 : "+test.getLastJobFirstFloor(1));
         System.out.println("piege : lest first 3 : "+test.getLastJobFirstFloor(3));
+
     }
 }

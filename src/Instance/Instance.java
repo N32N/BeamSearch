@@ -1,5 +1,8 @@
 package Instance;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -207,7 +210,66 @@ public class Instance {
      * ------------------A FAIRE-----------------------------
      * Lis l'instance � partir de son nom, et set les donn�es dans les variables d'instances
      */
-    private void read() throws IOException {
+    public void write(String fileName){
+        File file = new File(fileName);
+        FileWriter fw;
+
+        try{
+            fw = new FileWriter(file);
+            fw.write("nbM1 "+this.getNbM1()+"\n");
+            fw.write("nbM2 "+this.getNbM2()+"\n");
+            fw.write("nbJob "+this.nbJob+"\n");
+            fw.write("nbProd "+this.nbProd+"\n");
+            fw.write("nbTypes "+this.nbTypes+"\n");
+            fw.write("setUp\n");
+            String setUpString = "";
+            for(int i=0; i<this.setUp.length; i++){
+                for(int j=0; j<this.setUp[0].length ; j++){
+                    setUpString += this.setUp[i][j]+" ";
+                }
+                setUpString += "\n";
+            }
+            fw.write(setUpString);
+
+            fw.write("duration\n");
+            String durationString  = "";
+            for(int i=0; i<this.duration.length; i++){
+                for(int j=0; j<this.duration[0].length ; j++){
+                    durationString += this.duration[i][j]+" ";
+                }
+                durationString += "\n";
+            }
+            fw.write(durationString);
+
+
+            int[] setUpTimeM;//nbM1, �gal au temps de set-up de la machine m
+            int[] setUpTimeF;//nbM2, �gal au temps de set-up de la machine f
+            Job[] jobs;//nbJob, Liste des jobs alias commandes
+
+            int[][] stockCapa; //nbM2*3, capacité des stocks par machine F -- ordonnées par ordre croissant
+            fw.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public void read(String fileName){
+        File f = new File(fileName);
+
+        System.out.println("Chemin absolu du fichier : " + f.getAbsolutePath());
+
+        System.out.println("Nom du fichier : " + f.getName());
+
+        System.out.println("Est-ce qu'il existe ? " + f.exists());
+
+        System.out.println("Est-ce un répertoire ? " + f.isDirectory());
+
+        System.out.println("Est-ce un fichier ? " + f.isFile());
+
+    }
+    public void read() throws IOException {
      /*   File mfile = new File(fileName);
         if (!mfile.exists()) {
             throw new IOException("Le fichier saisi : "+ fileName + ", n'existe pas.");

@@ -9,6 +9,17 @@ public class Solution {
     private Instance instance;
     private ScheduledJob first;
     private ScheduledJob second;
+    private long cost;
+
+    public long getCost() {
+        return cost;
+    }
+
+    public void setCost(Planning planning) {
+        this.cost = planning.objective();
+    }
+
+
 
     public Instance getInstance() {
         return instance;
@@ -107,12 +118,21 @@ public class Solution {
         ScheduledJob current = this.first;
         ScheduledJob newSol = new ScheduledJob(this.first);
         clone.first = newSol;
-        while(current.getNext() != null){
-            newSol.setNext(new ScheduledJob(current));
+        while(current.getNext() != null){//stage 1
+            newSol.setNext(new ScheduledJob(current.getNext()));
             newSol=newSol.getNext();
             current = current.getNext();
         }
-        return null;
+
+        ScheduledJob currentSecond = this.second;
+        ScheduledJob newSolSecond = new ScheduledJob(this.second);
+        clone.second = newSolSecond;
+        while (currentSecond.getNext() != null){
+            newSolSecond.setNext(new ScheduledJob(currentSecond.getNext()));
+            newSolSecond =newSolSecond.getNext();
+            currentSecond = currentSecond.getNext();
+        }
+        return clone;
     }
 
 }
