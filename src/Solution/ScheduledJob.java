@@ -20,7 +20,6 @@ public class ScheduledJob extends Job {
     public ScheduledJob(Job j) {
         this(j.getNumber(), j.getProduct(), j.getType(), j.getQuantity(), j.getDueDate());
     }
-
     public ScheduledJob(Job j, ScheduledJob job) {
         this(j.getNumber(), j.getProduct(), j.getType(), j.getQuantity(), j.getDueDate());
         this.next = job;

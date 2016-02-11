@@ -42,7 +42,9 @@ public class Beam {
      * @return the best solution from the beam
      */
     public Solution bestSolution() {
-        return null;
+        System.out.println("bestSol");
+        beam[0].print();
+        return beam[0];
     }
 
 

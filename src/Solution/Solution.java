@@ -103,6 +103,15 @@ public class Solution {
 
     public Solution clone() {   //Create new ScheduledJobs (based on same jobs) and chains them
         //TODO      //recursive
+        Solution clone = new Solution(instance);
+        ScheduledJob current = this.first;
+        ScheduledJob newSol = new ScheduledJob(this.first);
+        clone.first = newSol;
+        while(current.getNext() != null){
+            newSol.setNext(new ScheduledJob(current));
+            newSol=newSol.getNext();
+            current = current.getNext();
+        }
         return null;
     }
 

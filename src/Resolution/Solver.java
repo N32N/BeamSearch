@@ -55,21 +55,25 @@ public class Solver {
     public Solution firstSolution() {
         Solution s = new Solution(this.instance);
         Job[] jobs = this.instance.getJobs();
-        this.first(s, jobs); //EDD
-        this.second(s, jobs); //EDD avec releases
+        this.EDD(s, jobs, 1); //EDD stage 1
+        this.EDD(s, jobs, 2); //EDD stage 2
         return s;
     }
-
-    public void first(Solution s, Job[] jobs) {
+    public void EDD(Solution s, Job[] jobs, int stage){
         int[] dd = new int[jobs.length];
         for (int j = 0; j < dd.length; j++) dd[j] = jobs[j].getDueDate();
-        int[] earliestFree = new int[instance.getNbM1() + instance.getNbM2()];
-        for (int j = 0; j < earliestFree.length; j++) earliestFree[j] = 0;
+
+        int[] dispo = null;
+        if(stage == 1 ) dispo = new int[instance.getNbM1()];
+        else if (stage == 2 ) dispo = new int[instance.getNbM2()];
+
         for (int j = 0; j < jobs.length; j++) {
             int index = getMinIndex(dd);
-            System.out.println("job : "+index+", "+dd[index]);
-            this.place(s, jobs[index]);
+            int machineAvailable = getMinIndex(dispo)+1;
+
+            s.addJob(jobs[index], stage, machineAvailable);
             dd[index] = Integer.MAX_VALUE;
+            dispo[machineAvailable-1]+= jobs[index].getQuantity();
         }
     }
 
@@ -79,38 +83,9 @@ public class Solver {
      * @param s
      * @param job
      */
-    private void place(Solution s, Job job) {
-        int[] dateDispo = new int[instance.getNbM1()];
-        int firstAvailable = getMinIndex(dateDispo)+1;//Car pas de machine 0
-        s.addJob(job, 1, firstAvailable);
-    }
+    private void place(Solution s, Job job, int stage) {
 
-    public void second(Solution s, Job[] jobs) {
-        int[] dd = new int[jobs.length];
-        for (int j = 0; j < jobs.length; j++) dd[j] = jobs[j].getDueDate();
-        ArrayList<Job> l = new ArrayList<Job>();
-        for (int j = 0; j < jobs.length; j++) {
-            int indice = getMinIndex(dd);
-            l.add(jobs[indice]);
-            dd[indice] = Integer.MAX_VALUE;
-        }
-        while (!l.isEmpty()) {
-            boolean isPlanned = false;
-            int curseur = 0;
-            while (!isPlanned && curseur < l.size()) {
-                if (this.placeWithRelease(s, l.get(curseur))) {
-                    isPlanned = true;
-                    l.remove(curseur);
-                } else curseur++;
-            }
-            if (curseur == l.size()) {
-                curseur = 1;
-                this.placeAtNextRelease(s, l.get(curseur));
-                l.remove(curseur);
-            }
-        }
     }
-
     /**
      * Place (job) when it is released, on a free machine
      *

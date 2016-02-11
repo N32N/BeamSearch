@@ -10,5 +10,6 @@ public class Main {
         System.out.println("Hello");
         Solver solver = new Solver(new Instance());
         solver.solve(5);
+        solver.getSolution().print();
     }
 }
