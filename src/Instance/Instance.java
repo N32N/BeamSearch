@@ -21,6 +21,8 @@ public class Instance {
     int[] setUpTimeF;//nbM2, �gal au temps de set-up de la machine f
     Job[] jobs;//nbJob, Liste des jobs alias commandes
 
+    int[][] stockCapa; //nbM2*3, capacité des stocks par machine F -- ordonnées par ordre croissant
+
     //----------------------Accesseurs----------------------------
     public String getFileName() {
         return fileName;
@@ -84,6 +86,10 @@ public class Instance {
         return getJobs()[i];
     }
 
+    public int[] getStockCapa(int machine) {
+        return stockCapa[machine];
+    }
+
     //-----------------------Constructeur--------------------------
 
     /**
@@ -141,6 +147,12 @@ public class Instance {
         this.jobs[3] = new Job(4, 1, 4, 3, 20);
         this.jobs[4] = new Job(5, 2, 2, 4, 20);
 
+        this.stockCapa = new int[nbM2][3];
+        for(int i = 0; i<stockCapa.length; i++){
+            stockCapa[i][0] = 50;
+            stockCapa[i][1] = 50;
+            stockCapa[i][2] = 50;
+        }
     }
 
     /**
@@ -182,6 +194,13 @@ public class Instance {
         this.jobs = new Job[nbJob];
         for (int i = 0; i < nbJob; i++)
             this.jobs[i] = new Job(i+1, (int)(nbProd*Math.random()), (int)(nbTypes*Math.random()), (int)(2+18*Math.random()), (int)(3*i+5*Math.random()));
+
+        this.stockCapa = new int[nbM2][3];
+        for(int i = 0; i<stockCapa.length; i++){
+            stockCapa[i][0] = 50;
+            stockCapa[i][1] = 50;
+            stockCapa[i][2] = 50;
+        }
     }
 
     /**

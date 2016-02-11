@@ -8,7 +8,7 @@ import Instance.Instance;
 public class Planning {
     private Instance instance;
     private int[][][] planning;     //Planning[machine][lines of the jobs][number-beginTime-endTime]
-    private boolean isStockValiv;   //If the planning respects the stock constraints
+    private boolean isStockValid;   //If the planning respects the stock constraints
     private int fin;
 
     public Planning(Instance instance, Solution s) {
@@ -57,7 +57,7 @@ public class Planning {
                 planning[instance.getNbM1() + machine - 1][line][1] = time;
                 time += currentSecond.getQuantity() * instance.getDuration(machine - 1, currentSecond.getType()); //ajout processTime de currentSecond sur machine
                 planning[instance.getNbM1() + machine - 1][line][2] = time;
-                if (null != nextFirst && nextFirst.getNumber()>0)
+                if (null != nextFirst && nextFirst.getNumber() > 0)
                     time += instance.getSetupTime(2, machine - 1) * instance.getSetUp(currentSecond.getNumber(), nextSecond.getNumber()); //ajout setUpTime entre currentSecond et nextSecond sur machine -- !!! si nextSecond est null !!!
                 if (time > max) max = time;
                 line++;
@@ -66,7 +66,7 @@ public class Planning {
             if (null != nextSecond) nextSecond = nextSecond.getNext();
         }
         this.fin = max;
-        this.isStockValiv = checkStock(planning);
+        this.isStockValid = checkStock();
     }
 
     public int getRelease(int jobNumber) {
@@ -102,12 +102,54 @@ public class Planning {
         }
     }
 
-    public int objective() {
-        //TODO
-        return 0;
+    public boolean isStockValid() {
+        return isStockValid;
     }
 
-    public static boolean checkStock(int[][][] planning) {
+    public int objective() {
+        //TODO
+        return fin;
+    }
+
+    public boolean checkStock() {
+        //Prepare stocks for every machine at second floor
+        Stock[] stocks = new Stock[instance.getNbM2()];
+        for(int s = 0; s<stocks.length; s++)
+            stocks[s] = new Stock(instance, instance.getStockCapa(instance.getNbM1()+s));
+        // cursors
+        int[] indexMachine = new int[planning.length];
+        for (int i = 0; i < indexMachine.length; i++)
+            indexMachine[i] = 0;
+        boolean end = false;
+        // loop : go through "planning" by order of date, and checks the stocks every time : returns false if needed
+        while (!end) {
+            int machine = 0;
+            int job = 0;
+            int min = fin;
+            for (int i = 0; i < indexMachine.length; i++)
+                if (date(i, indexMachine[i]) <= min) {
+                    min = date(i, indexMachine[i]);
+                    machine = i;
+                    job = indexMachine[i];
+                }
+
+            if (machine < instance.getNbM1()){
+                stocks[machine].add(instance.getJob(planning[machine][job][0]).getQuantity(), instance.getJob(planning[machine][job][0]).getType());
+                if(!stocks[machine].isValid()) return false;
+            }
+            else stocks[machine - instance.getNbM1()].add(-instance.getJob(planning[machine][job][0]).getQuantity(), instance.getJob(planning[machine][job][0]).getType());
+
+            indexMachine[machine]++;
+            end = true;
+            for (int i = 0; i < indexMachine.length; i++)
+                if (indexMachine[i] < planning[i].length && planning[i][indexMachine[i]][0] != 0)
+                    end = false;
+        }
         return true;
+    }
+
+    public int date(int machine, int line) {
+        if (machine < instance.getNbM1()) return planning[machine][line][2];
+        else return planning[machine][line][1];
     }
 }
