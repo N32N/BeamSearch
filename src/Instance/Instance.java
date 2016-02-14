@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.Scanner;
 
 /**
  * Created by n on 08/02/16.
@@ -101,9 +103,9 @@ public class Instance {
      * @param fName
      * @throws IOException
      */
-    public Instance(String fName) throws IOException {
+    public Instance(String fName) {
         fileName = fName;
-        read();
+        read(fileName);
     }
 
     /**
@@ -207,19 +209,18 @@ public class Instance {
     }
 
     /**
-     * ------------------A FAIRE-----------------------------
-     * Lis l'instance � partir de son nom, et set les donn�es dans les variables d'instances
+     *Crée une fichier texte à partir des variable d'instances actuelles.
      */
     public void write(String fileName){
-        File file = new File(fileName);
+        File file = new File("instances/"+fileName);
         FileWriter fw;
 
         try{
             fw = new FileWriter(file);
             fw.write("nbM1 "+this.getNbM1()+"\n");
             fw.write("nbM2 "+this.getNbM2()+"\n");
-            fw.write("nbJob "+this.nbJob+"\n");
-            fw.write("nbProd "+this.nbProd+"\n");
+            fw.write("nbJob " + this.nbJob + "\n");
+            fw.write("nbProd " + this.nbProd + "\n");
             fw.write("nbTypes "+this.nbTypes+"\n");
             fw.write("setUp\n");
             String setUpString = "";
@@ -241,12 +242,38 @@ public class Instance {
             }
             fw.write(durationString);
 
+            fw.write("setUpTimeM\n");
+            String Mstring = "";
+            for(int i=0; i<this.setUpTimeM.length; i++){
+                Mstring += this.setUpTimeM[i]+" ";
+            }
+            Mstring+="\n";
+            fw.write(Mstring);
 
-            int[] setUpTimeM;//nbM1, �gal au temps de set-up de la machine m
-            int[] setUpTimeF;//nbM2, �gal au temps de set-up de la machine f
-            Job[] jobs;//nbJob, Liste des jobs alias commandes
+            fw.write("setUpTimeF\n");
+            String Fstring = "";
+            for(int i=0; i<this.setUpTimeF.length; i++){
+                Fstring += this.setUpTimeF[i]+" ";
+            }
+            Fstring+="\n";
+            fw.write(Fstring);
 
-            int[][] stockCapa; //nbM2*3, capacité des stocks par machine F -- ordonnées par ordre croissant
+            String jobsString = "jobs\n";
+            for(int i=0; i< this.getNbJob(); i++){
+                jobsString+=this.getJob(i).getAsString()+"\n";
+            }
+            fw.write(jobsString);
+
+            fw.write("stockCapa\n");
+            String stockString  = "";
+            for(int i=0; i<this.stockCapa.length; i++){
+                for(int j=0; j<this.stockCapa[0].length ; j++){
+                    stockString += this.stockCapa[i][j]+" ";
+                }
+                stockString += "\n";
+            }
+            fw.write(stockString);
+
             fw.close();
 
         }catch (FileNotFoundException e){
@@ -255,101 +282,87 @@ public class Instance {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Lis l'instance à partir du fichier texte selectionné
+     * @param fileName
+     */
     public void read(String fileName){
-        File f = new File(fileName);
+        try{
+            Scanner sc = new Scanner(new File("instances/"+fileName));
+            Scanner lineSc = new Scanner(sc.nextLine());
 
-        System.out.println("Chemin absolu du fichier : " + f.getAbsolutePath());
-
-        System.out.println("Nom du fichier : " + f.getName());
-
-        System.out.println("Est-ce qu'il existe ? " + f.exists());
-
-        System.out.println("Est-ce un répertoire ? " + f.isDirectory());
-
-        System.out.println("Est-ce un fichier ? " + f.isFile());
-
-    }
-    public void read() throws IOException {
-     /*   File mfile = new File(fileName);
-        if (!mfile.exists()) {
-            throw new IOException("Le fichier saisi : "+ fileName + ", n'existe pas.");
-        }
-        Scanner sc = new Scanner(mfile);
-
-        String line;
-        do {
-            line = sc.nextLine();
-            System.err.println(line);
-        }
-        while (!line.startsWith("DIMENSION"));
-        Scanner lineSc = new Scanner(line);
-        lineSc.next();
-        if (!lineSc.hasNextInt()) {
             lineSc.next();
-        }
-       /* nbSommets =lineSc.nextInt();
-        coordX = new double[nbSommets];
-        coordY = new double[nbSommets];
-        labels = new String[nbSommets];
-        demande = new int[nbSommets];
-        datePlusTot = new int[nbSommets];
-        datePlusTard = new int[nbSommets];
-        tempsService = new int[nbSommets];
+            this.nbM1 = lineSc.nextInt();
 
-
-
-
-        while (!line.startsWith("CAPACITE")) {
-            line = sc.nextLine();
-            System.err.println(line);
-        }
-        lineSc.close();
-        lineSc = new Scanner(line);
-        lineSc.next();
-        if (!lineSc.hasNextInt()) {
+            lineSc=new Scanner(sc.nextLine());
             lineSc.next();
-        }
-        capaVehicule =lineSc.nextInt();
+            this.nbM2 = lineSc.nextInt();
 
-        while (!line.contains("ID")) {
-            line = sc.nextLine();
-            System.err.println(line);
-        }
-        line = sc.nextLine();
+            lineSc=new Scanner(sc.nextLine());
+            lineSc.next();
+            this.nbJob = lineSc.nextInt();
 
-        int idx = 0;
-        for (int s=0;s<nbSommets;s++){
-            assert(idx<nbSommets);
-            lineSc = new Scanner(line);
-            lineSc.useLocale(Locale.US);
-            labels[idx] = lineSc.next();
-            coordX[idx] = lineSc.nextDouble();
-            coordY[idx] = lineSc.nextDouble();
-            demande[idx]= lineSc.nextInt();
-            datePlusTot[idx]= lineSc.nextInt();
-            datePlusTard[idx] = lineSc.nextInt();
-            tempsService[idx]=lineSc.nextInt();
-            line = sc.nextLine();
-            idx++;
-        }
+            lineSc=new Scanner(sc.nextLine());
+            lineSc.next();
+            this.nbProd = lineSc.nextInt();
 
-        // Cr�ation de la matrice de distances
-        distances = new long[nbSommets][];
-        for (int i = 0; i < nbSommets; i++) {
-            distances[i] = new long[nbSommets];
-        }
+            lineSc=new Scanner(sc.nextLine());
+            lineSc.next();
+            this.nbTypes= lineSc.nextInt();
 
-        // Calcul des distances
-        for (int i = 0; i < nbSommets; i++) {
-            distances[i][i] = 0;
-            for (int j = i + 1; j < nbSommets; j++) {
-                long dist = distance(i,j);
-                //				System.out.println("Distance " + i + " " +j + ": " + dist);
-                distances[i][j] = dist;
-                distances[j][i] = dist;
+            sc.nextLine();
+            this.setUp = new int[nbProd][nbProd];
+            for(int i=0; i <nbProd; i++){
+                lineSc = new Scanner(sc.nextLine());
+                for(int j=0; j<nbProd; j++){
+                    this.setUp[i][j] = lineSc.nextInt();
+                }
             }
+
+            sc.nextLine();
+            this.duration = new double[nbM2][nbTypes];
+            for(int i=0; i <nbM2; i++){
+                lineSc = new Scanner(sc.nextLine()).useLocale(Locale.US);
+                for(int j=0; j<nbTypes; j++){
+                    this.duration[i][j] = lineSc.nextDouble();
+                }
+            }
+            sc.nextLine();
+
+            this.setUpTimeM = new int[this.nbM1];
+            lineSc = new Scanner(sc.nextLine());
+            for(int i=0; i<nbM1; i++){
+                this.setUpTimeM[i]=lineSc.nextInt();
+            }
+            sc.nextLine();
+
+            this.setUpTimeF = new int[this.nbM2];
+            lineSc = new Scanner(sc.nextLine());
+            for(int i=0; i<nbM2; i++){
+                this.setUpTimeF[i]=lineSc.nextInt();
+            }
+            sc.nextLine();
+
+            this.jobs = new Job[nbJob];//Convention : Job 0 n'est pas utilis�, Commande vide
+            for(int i=0; i<nbJob; i++){
+                lineSc = new Scanner(sc.nextLine());
+                this.jobs[i] = new Job(lineSc.nextInt(), lineSc.nextInt(),lineSc.nextInt(),lineSc.nextInt(),lineSc.nextInt() );
+            }
+            sc.nextLine();
+
+            this.stockCapa = new int[nbM2][3];
+            for(int i=0; i <nbM2; i++){
+                lineSc = new Scanner(sc.nextLine());
+                for(int j=0; j<3; j++){
+                    this.stockCapa[i][j] = lineSc.nextInt();
+                }
+            }
+            sc.close();
+
+        } catch (FileNotFoundException e ){
+            System.out.println("Le fichier " + fileName + " n'existe pas");
         }
-        lineSc.close();
-        sc.close();*/
+
     }
 }
