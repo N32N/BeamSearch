@@ -1,6 +1,6 @@
 package Solution;
 
-import Instance.Instance;
+import Instance.*;
 
 /**
  * Created by n on 08/02/16.
@@ -9,11 +9,12 @@ public class Planning {
     private Instance instance;
     private int[][][] planning;     //Planning[machine][lines of the jobs][number-beginTime-endTime]
     private int fin;
+    private int lateTime;
 
     public Planning(Instance instance, Solution s) {
         this.instance = instance;
         this.planning = new int[s.getInstance().getNbM1() + s.getInstance().getNbM2()][s.getInstance().getNbJob()][3];
-        int max = 0;
+        fin = 0;
 
         ScheduledJob currentFirst = s.getFirst();
         ScheduledJob nextFirst = s.getFirst().getNext();
@@ -30,10 +31,10 @@ public class Planning {
                 planning[machine - 1][line][1] = time;//Date de lancement de productiondu job
                 time += currentFirst.getQuantity(); //ajout processTime de currentFirst sur machine
                 planning[machine - 1][line][2] = time;//Date de fin de production du job
-                if (null != nextFirst && nextFirst.getNumber() >0) {
+                if (null != nextFirst && nextFirst.getNumber() > 0) {
                     time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getProduct(), nextFirst.getProduct());
                     //time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getNumber(), nextFirst.getNumber()); //ajout setUpTime entre currentFirst et nextFirst sur machine
-                    if (time > max) max = time;
+                    if (time > fin) fin = time;
                     line++;
                 }
             }
@@ -56,23 +57,19 @@ public class Planning {
                 int release = this.getRelease(currentSecond.getNumber());//Date à partir de laquelle le job est produit(fin) au premier étage
                 if (time < release) time = release;//Vérification de la release à l'étage précédent
                 planning[instance.getNbM1() + machine - 1][line][1] = time;
-                if(currentSecond.getType() >= instance.getNbTypes()){
-
-                    System.out.println("wut");
-                    System.out.println(currentSecond.getNumber());
-                }
-                //System.out.println(currentSecond.getType());
                 time += currentSecond.getQuantity() * instance.getDuration(machine - 1, currentSecond.getType()); //ajout processTime de currentSecond sur machine
                 planning[instance.getNbM1() + machine - 1][line][2] = time;
+                int late = time - currentSecond.getDueDate();
+                if (late < 0) late = 0;
+                lateTime += late;
                 if (null != nextSecond && nextSecond.getNumber() > 0)
                     time += instance.getSetupTime(2, machine - 1) * instance.getSetUp(currentSecond.getProduct(), nextSecond.getProduct()); //ajout setUpTime entre currentSecond et nextSecond sur machine -- !!! si nextSecond est null !!!
-                if (time > max) max = time;
+                if (time > fin) fin = time;
                 line++;
             }
             currentSecond = nextSecond;
             if (null != nextSecond) nextSecond = nextSecond.getNext();
         }
-        this.fin = max;
     }
 
     public int getRelease(int jobNumber) {
@@ -92,7 +89,7 @@ public class Planning {
         for (int machine = 1; machine <= instance.getNbM1(); machine++) {
             System.out.println("Machine " + machine);
             int i = 0;
-            while (i < planning[machine-1].length && planning[machine - 1][i][0] != 0 ) {
+            while (i < planning[machine - 1].length && planning[machine - 1][i][0] != 0) {
                 System.out.println("" + planning[machine - 1][i][0] + " - " + planning[machine - 1][i][1] + " - " + planning[machine - 1][i][2]);
                 i++;
             }
@@ -106,27 +103,46 @@ public class Planning {
                 i++;
             }
         }
+        System.out.println("Objective = "+this.objective()+" (end = "+this.fin+", late = "+this.lateTime+")");
     }
 
     /**
      * Vérifie la validité de la solution à partir du planning. vérifie notamment les stocks et les contraintes.
      * A voir après les procédures
+     *
      * @return
      */
-    public boolean isValid(){
+    public boolean isValid() {
         return checkStock();
     }
 
     public int objective() {
-        //TODO
-        return fin;
+        return instance.getCoutProd() * fin + instance.getCoutPenalite() * lateTime;
+    }
+
+    public int getDelivery(int jobNumber) {
+        boolean found = false;
+        int machine = this.instance.getNbM1();
+        int j = 0;
+        while (!found && machine < planning.length) {
+            j = 0;
+            while (!found && j < planning[machine].length && planning[machine][j][0] > 0) {
+                if (planning[machine][j][0] == jobNumber) found = true;
+                else j++;
+            }
+            machine++;
+        }
+        if (!found) {
+            System.out.println("Job " + jobNumber + " is not scheduled and has no delivery time");
+            return 0;
+        } else return planning[machine][j][2];
     }
 
     public boolean checkStock() {
         //Prepare stocks for every machine at second floor
         Stock[] stocks = new Stock[instance.getNbM2()];
-        for(int s = 0; s<stocks.length; s++)
-            stocks[s] = new Stock(instance, instance.getStockCapa(instance.getNbM1()+s));
+        for (int s = 0; s < stocks.length; s++)
+            stocks[s] = new Stock(instance, instance.getStockCapa(instance.getNbM1() + s));
         // cursors
         int[] indexMachine = new int[planning.length];
         for (int i = 0; i < indexMachine.length; i++)
@@ -144,11 +160,11 @@ public class Planning {
                     job = indexMachine[i];
                 }
             // change the stocks according to the current jobs finishing at 1st floor or starting at 2nd floor
-            if (machine < instance.getNbM1()){
+            if (machine < instance.getNbM1()) {
                 stocks[machine].add(instance.getJob(planning[machine][job][0]).getQuantity());
-                if(!stocks[machine].isValid()) return false;
-            }
-            else stocks[machine - instance.getNbM1()].remove(-instance.getJob(planning[machine][job][0]).getQuantity());
+                if (!stocks[machine].isValid()) return false;
+            } else
+                stocks[machine - instance.getNbM1()].remove(-instance.getJob(planning[machine][job][0]).getQuantity());
 
             indexMachine[machine]++;
             end = true;

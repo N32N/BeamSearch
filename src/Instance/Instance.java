@@ -97,6 +97,14 @@ public class Instance {
         return stockCapa[machine];
     }
 
+    public int getCoutProd() {
+        return coutProd;
+    }
+
+    public int getCoutPenalite() {
+        return coutPenalite;
+    }
+
     //-----------------------Constructeur--------------------------
 
     /**
