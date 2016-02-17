@@ -132,12 +132,12 @@ public class Planning {
                     machine = i;
                     job = indexMachine[i];
                 }
-
+            // change the stocks according to the current jobs finishing at 1st floor or starting at 2nd floor
             if (machine < instance.getNbM1()){
-                stocks[machine].add(instance.getJob(planning[machine][job][0]).getQuantity(), instance.getJob(planning[machine][job][0]).getType());
+                stocks[machine].add(instance.getJob(planning[machine][job][0]).getQuantity());
                 if(!stocks[machine].isValid()) return false;
             }
-            else stocks[machine - instance.getNbM1()].add(-instance.getJob(planning[machine][job][0]).getQuantity(), instance.getJob(planning[machine][job][0]).getType());
+            else stocks[machine - instance.getNbM1()].remove(-instance.getJob(planning[machine][job][0]).getQuantity());
 
             indexMachine[machine]++;
             end = true;

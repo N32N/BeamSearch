@@ -6,7 +6,7 @@ import Instance.Instance;
  * Created by n on 11/02/16.
  */
 public class Stock {
-    private int[] stockByType;
+    private int[] actualStock;
     private int[] cap;
 
     /**
@@ -15,8 +15,8 @@ public class Stock {
      * @param cap
      */
     public Stock(Instance instance, int[] cap) {
-        stockByType = new int[instance.getNbTypes()];
-        for (int i = 0; i < stockByType.length; i++) stockByType[i] = 0;
+        actualStock = new int[cap.length+3];
+        for (int i = 0; i < actualStock.length; i++) actualStock[i] = 0;
         this.cap = cap;
     }
 
@@ -24,17 +24,17 @@ public class Stock {
      * @return true if the current state of this stocks respects the capacity constraints
      */
     public boolean isValid() {
-        int numberOfDifferentTypes = 0;
+        int numberOfOrders = 0;
         int total = 0;
-        for(int i = 0; i<stockByType.length; i++){
-            total+=stockByType[i];
-            if(stockByType[i]>0)
-                numberOfDifferentTypes++;
+        for(int i = 0; i< actualStock.length; i++){
+            total+= actualStock[i];
+            if(actualStock[i]>0)
+                numberOfOrders++;
         }
         int totalCap = 0;
         for(int c = 0; c< cap.length; c++)  totalCap+=cap[c];
 
-        switch(numberOfDifferentTypes){
+        switch(numberOfOrders){
             case 0: return true;
             case 1: return total<=totalCap;
             case 2: {
@@ -42,8 +42,8 @@ public class Stock {
                 int cursorSt = 0;
                 int cursorType = 0;
                 while(cursorSt<2){
-                    if(stockByType[cursorType]>0){
-                        st[cursorSt]=stockByType[cursorType];
+                    if(actualStock[cursorType]>0){
+                        st[cursorSt]= actualStock[cursorType];
                         cursorSt++;
                     }
                     cursorType++;
@@ -56,8 +56,8 @@ public class Stock {
                 int cursorSt = 0;
                 int cursorType = 0;
                 while(cursorSt<3){
-                    if(stockByType[cursorType]>0){
-                        st[cursorSt]=stockByType[cursorType];
+                    if(actualStock[cursorType]>0){
+                        st[cursorSt]= actualStock[cursorType];
                         cursorSt++;
                     }
                     cursorType++;
@@ -71,8 +71,28 @@ public class Stock {
         }
     }
 
-    public void add (int quantity, int type){
-        stockByType[type]+=quantity;
+    public void add (int quantity){
+        boolean added = false;
+        int i = 0;
+        while(!added && i<actualStock.length){
+            if(actualStock[i]==0){
+                actualStock[i]=quantity;
+                added=true;
+            }
+            else i++;
+        }
+    }
+
+    public void remove (int quantity){
+        boolean removed = false;
+        int i = 0;
+        while(!removed && i<actualStock.length){
+            if(actualStock[i]==quantity){
+                actualStock[i]=0;
+                removed=true;
+            }
+            else i++;
+        }
     }
 
     public static void order(int[] st, int a, int b){
