@@ -39,7 +39,7 @@ public class Solver {
      */
     public void solve(int beamValue) {
         solution = firstSolution();
-        solution = beamSearch(beamValue);
+        //solution = beamSearch(beamValue);
     }
 
     /**

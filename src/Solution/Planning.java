@@ -8,7 +8,6 @@ import Instance.Instance;
 public class Planning {
     private Instance instance;
     private int[][][] planning;     //Planning[machine][lines of the jobs][number-beginTime-endTime]
-    private boolean isStockValid;   //If the planning respects the stock constraints
     private int fin;
 
     public Planning(Instance instance, Solution s) {
@@ -21,20 +20,22 @@ public class Planning {
         int machine = 0;
         int time = 0;
         int line = 0;
-        while (null != currentFirst) {
-            if (currentFirst.getNumber() < 0) {
-                machine = -currentFirst.getNumber();
+        while (null != currentFirst) {//Tan qu'on a pas fait chaque scheduledJob de du premier étage, on contiue à lire
+            if (currentFirst.getNumber() < 0) {////Si le job est un marqueur pour une machine
+                machine = -currentFirst.getNumber();//On change la machine actuelle
                 line = 0;
                 time = 0;
-            } else {
-                planning[machine - 1][line][0] = currentFirst.getNumber();
-                planning[machine - 1][line][1] = time;
+            } else {//Si le scheduledJob est un Job
+                planning[machine - 1][line][0] = currentFirst.getNumber();//On ajoute le job au planning, à la ligne suivante
+                planning[machine - 1][line][1] = time;//Date de lancement de productiondu job
                 time += currentFirst.getQuantity(); //ajout processTime de currentFirst sur machine
-                planning[machine - 1][line][2] = time;
-                if (null != nextFirst)
-                    time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getNumber(), nextFirst.getNumber()); //ajout setUpTime entre currentFirst et nextFirst sur machine
-                if (time > max) max = time;
-                line++;
+                planning[machine - 1][line][2] = time;//Date de fin de production du job
+                if (null != nextFirst && nextFirst.getNumber() >0) {
+                    time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getProduct(), nextFirst.getProduct());
+                    //time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getNumber(), nextFirst.getNumber()); //ajout setUpTime entre currentFirst et nextFirst sur machine
+                    if (time > max) max = time;
+                    line++;
+                }
             }
             currentFirst = nextFirst;
             if (null != nextFirst) nextFirst = nextFirst.getNext();
@@ -52,13 +53,19 @@ public class Planning {
                 time = 0;
             } else {
                 planning[instance.getNbM1() + machine - 1][line][0] = currentSecond.getNumber();
-                int release = this.getRelease(currentSecond.getNumber());
+                int release = this.getRelease(currentSecond.getNumber());//Date à partir de laquelle le job est produit(fin) au premier étage
                 if (time < release) time = release;//Vérification de la release à l'étage précédent
                 planning[instance.getNbM1() + machine - 1][line][1] = time;
+                if(currentSecond.getType() >= instance.getNbTypes()){
+
+                    System.out.println("wut");
+                    System.out.println(currentSecond.getNumber());
+                }
+                //System.out.println(currentSecond.getType());
                 time += currentSecond.getQuantity() * instance.getDuration(machine - 1, currentSecond.getType()); //ajout processTime de currentSecond sur machine
                 planning[instance.getNbM1() + machine - 1][line][2] = time;
-                if (null != nextFirst && nextFirst.getNumber() > 0)
-                    time += instance.getSetupTime(2, machine - 1) * instance.getSetUp(currentSecond.getNumber(), nextSecond.getNumber()); //ajout setUpTime entre currentSecond et nextSecond sur machine -- !!! si nextSecond est null !!!
+                if (null != nextSecond && nextSecond.getNumber() > 0)
+                    time += instance.getSetupTime(2, machine - 1) * instance.getSetUp(currentSecond.getProduct(), nextSecond.getProduct()); //ajout setUpTime entre currentSecond et nextSecond sur machine -- !!! si nextSecond est null !!!
                 if (time > max) max = time;
                 line++;
             }
@@ -66,7 +73,6 @@ public class Planning {
             if (null != nextSecond) nextSecond = nextSecond.getNext();
         }
         this.fin = max;
-        this.isStockValid = checkStock();
     }
 
     public int getRelease(int jobNumber) {
@@ -86,7 +92,7 @@ public class Planning {
         for (int machine = 1; machine <= instance.getNbM1(); machine++) {
             System.out.println("Machine " + machine);
             int i = 0;
-            while (planning[machine - 1][i][0] != 0) {
+            while (i < planning[machine-1].length && planning[machine - 1][i][0] != 0 ) {
                 System.out.println("" + planning[machine - 1][i][0] + " - " + planning[machine - 1][i][1] + " - " + planning[machine - 1][i][2]);
                 i++;
             }
@@ -102,17 +108,15 @@ public class Planning {
         }
     }
 
-    public boolean isStockValid() {
-        return isStockValid;
-    }
-
     /**
      * Vérifie la validité de la solution à partir du planning. vérifie notamment les stocks et les contraintes.
+     * A voir après les procédures
      * @return
      */
     public boolean isValid(){
-        return isStockValid;
+        return checkStock();
     }
+
     public int objective() {
         //TODO
         return fin;

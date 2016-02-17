@@ -24,8 +24,8 @@ public class Solution {
      */
     public void set(){
         Planning planning = new Planning(instance, this);
-        this.cost = planning.objective();
         this.isValid = planning.isValid();
+        if(this.isValid) this.cost = planning.objective();
     }
     public Instance getInstance() {
         return instance;
@@ -111,6 +111,10 @@ public class Solution {
             System.out.println("number " + current2.getNumber());
             current2 = current2.getNext();
         }
+    }
+    public void printPlanning(){
+        Planning p = new Planning(instance, this);
+        p.print();
     }
     public Solution clone() {   //Create new ScheduledJobs (based on same jobs) and chains them
         //TODO      //recursive
