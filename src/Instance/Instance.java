@@ -19,6 +19,8 @@ public class Instance {
     private int nbJob;//nb de commandes
     private int nbProd;//nb de produits
     private int nbTypes;//nb de types
+    private int coutProd;
+    private int coutPenalite;
 
     int[][] setUp;//nbProd*nbProd, setUp[i][j]=1 si il faut un set-up entre le produit i et le produit j (i avant, j apr�s)
     double[][] duration;//nbM2*nbTypes, �gal � (1 / vitesse de production de la machine f pour le type t), donc Tprocess=quantity*duration.
@@ -117,6 +119,8 @@ public class Instance {
         this.nbJob = 5;
         this.nbProd = 5;
         this.nbTypes = 4;
+        this.coutProd = 1;
+        this.coutPenalite = 3;
 
         this.setUp = new int[nbProd][nbProd];
         for (int i = 0; i < nbProd; i++) {
@@ -169,12 +173,14 @@ public class Instance {
      * @param nbProd
      * @param nbTypes
      */
-    public Instance(int M, int F, int nbJob, int nbProd, int nbTypes) {
+    public Instance(int M, int F, int nbJob, int nbProd, int nbType, int nbTypes, int coutPenalite) {
         this.nbM1 = M;
         this.nbM2 = F;
         this.nbJob = nbJob;
         this.nbProd = nbProd;
         this.nbTypes = nbTypes;
+        this.coutProd = 1;
+        this.coutPenalite =coutPenalite;
 
         this.setUp = new int[nbProd][nbProd];
         for (int i = 0; i < nbProd; i++)
@@ -222,6 +228,8 @@ public class Instance {
             fw.write("nbJob " + this.nbJob + "\n");
             fw.write("nbProd " + this.nbProd + "\n");
             fw.write("nbTypes "+this.nbTypes+"\n");
+            fw.write("coutProd "+this.coutProd+"\n");
+            fw.write("coutPenalite"+this.coutPenalite+"\n");
             fw.write("setUp\n");
             String setUpString = "";
             for(int i=0; i<this.setUp.length; i++){
@@ -310,6 +318,14 @@ public class Instance {
             lineSc=new Scanner(sc.nextLine());
             lineSc.next();
             this.nbTypes= lineSc.nextInt();
+
+            lineSc=new Scanner(sc.nextLine());
+            lineSc.next();
+            this.coutProd= lineSc.nextInt();
+
+            lineSc=new Scanner(sc.nextLine());
+            lineSc.next();
+            this.coutPenalite= lineSc.nextInt();
 
             sc.nextLine();
             this.setUp = new int[nbProd][nbProd];

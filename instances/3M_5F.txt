@@ -3,6 +3,8 @@ nbM2 5
 nbJob 20
 nbProd 5
 nbTypes 4
+coutProd 1
+coutPenalite 1
 setUp
 0 0 0 0 0 
 0 0 0 0 0 
