@@ -13,31 +13,31 @@ public class StockTest {
         Stock s = new Stock(i, i.getStockCapa(1));
         System.out.println("T"+s.isValid());
 
-        s.add(30, 1);
+        s.add(30);
         System.out.println("T"+s.isValid());
 
-        s.add(50, 2);
+        s.add(50);
         System.out.println("T"+s.isValid());
 
-        s.add(5, 0);
+        s.add(5);
         System.out.println("T"+s.isValid());
 
-        s.add(-30, 1);
+        s.add(-30);
         System.out.println("T"+s.isValid());
 
-        s.add(30, 2);
+        s.add(30);
         System.out.println("T"+s.isValid());
 
-        s.add(-5, 0);
+        s.add(-5);
         System.out.println("T"+s.isValid());
 
-        s.add(50, 2);
+        s.add(50);
         System.out.println("T"+s.isValid());
 
-        s.add(30, 2);
+        s.add(30);
         System.out.println("T"+s.isValid());
 
-        s.add(5, 0);
+        s.add(5);
         System.out.println("T"+s.isValid());
     }
 
