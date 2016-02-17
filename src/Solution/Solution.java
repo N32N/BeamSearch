@@ -10,17 +10,23 @@ public class Solution {
     private ScheduledJob first;
     private ScheduledJob second;
     private long cost;
+    private boolean isValid;
 
     public long getCost() {
         return cost;
     }
-
-    public void setCost(Planning planning) {
-        this.cost = planning.objective();
+    public boolean isValid(){
+        return this.isValid;
     }
 
-
-
+    /**
+     * Crée un planning à partir de la solution actuelle, afin de déterminer la validité de la solution et son coût.
+     */
+    public void set(){
+        Planning planning = new Planning(instance, this);
+        this.cost = planning.objective();
+        this.isValid = planning.isValid();
+    }
     public Instance getInstance() {
         return instance;
     }
@@ -51,6 +57,9 @@ public class Solution {
             m2 = new Mark(i2, m2);
         }
         this.second = m2;
+
+        this.isValid = false;
+        this.cost = Integer.MAX_VALUE;
     }
 
     public ScheduledJob getLastJobFirstFloor(int machine) {
@@ -103,15 +112,6 @@ public class Solution {
             current2 = current2.getNext();
         }
     }
-
-    /**
-     * @return true if the solution does not violate the constrainsts
-     */
-    public boolean isValid() {
-        //TODO
-        return false;
-    }
-
     public Solution clone() {   //Create new ScheduledJobs (based on same jobs) and chains them
         //TODO      //recursive
         Solution clone = new Solution(instance);

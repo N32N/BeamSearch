@@ -106,6 +106,13 @@ public class Planning {
         return isStockValid;
     }
 
+    /**
+     * Vérifie la validité de la solution à partir du planning. vérifie notamment les stocks et les contraintes.
+     * @return
+     */
+    public boolean isValid(){
+        return isStockValid;
+    }
     public int objective() {
         //TODO
         return fin;

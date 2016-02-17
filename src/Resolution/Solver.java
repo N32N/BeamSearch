@@ -66,6 +66,7 @@ public class Solver {
         Job[] jobs = this.instance.getJobs();
         this.EDD(s, jobs, 1); //EDD stage 1
         this.EDD(s, jobs, 2); //EDD stage 2
+        s.set();
         return s;
     }
     public void EDD(Solution s, Job[] jobs, int stage){

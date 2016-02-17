@@ -9,6 +9,8 @@ import Solution.Solution;
 public final class Procedures {
 
     public static Solution[] random(Solution mere) {
+        Solution sol = mere.clone();
+
         return new Solution[1];
     }
 
