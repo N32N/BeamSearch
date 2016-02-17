@@ -4,6 +4,7 @@ import Solution.Solution;
 
 /**
  * Created by n on 08/02/16.
+ * Ne retourne que des solutions valides.
  */
 public final class Procedures {
 

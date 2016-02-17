@@ -33,11 +33,20 @@ public class Solver {
         solution = new Solution(i);
     }
 
+    /**
+     * Méthode à appeler depuis la classe Main. Initialise une solution puis lance la beam search, pour retourner la meilleure solution trouvée
+     * @param beamValue Nombre de solution dans le beam
+     */
     public void solve(int beamValue) {
         solution = firstSolution();
         solution = beamSearch(beamValue);
     }
 
+    /**
+     *
+     * @param beamValue
+     * @return
+     */
     public Solution beamSearch(int beamValue) {
         Beam beam = new Beam(beamValue, solution);
         beam.procedure("random", 5);
@@ -76,39 +85,6 @@ public class Solver {
             dispo[machineAvailable-1]+= jobs[index].getQuantity();
         }
     }
-
-    /**
-     * Place (job) on the first free machine in the first stage of (s)
-     *
-     * @param s
-     * @param job
-     */
-    private void place(Solution s, Job job, int stage) {
-
-    }
-    /**
-     * Place (job) when it is released, on a free machine
-     *
-     * @param s
-     * @param job
-     */
-    private void placeAtNextRelease(Solution s, Job job) {
-        //TODO
-    }
-
-    /**
-     * Place the job (job) on the earliest free machine (in s, second stage) after its release, and return true
-     * if the release date is after every machine is free, return false
-     *
-     * @param s
-     * @param job
-     * @return
-     */
-    private boolean placeWithRelease(Solution s, Job job) {
-        //TODO
-        return false;
-    }
-
     /**
      * @param tab
      * @return the index of the minimum value in tab
