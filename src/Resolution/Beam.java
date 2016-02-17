@@ -43,9 +43,12 @@ public class Beam {
         }
         try{
             for(int i=0; i< allSolutions.length; i++){
-                if(!allSolutions[i].isValid()){
-                    throw new Exception("La solution i du beam n'est pas valide");
+                if(allSolutions[i].getCost() == 0){
+                    throw new Exception("cout nul");
                 }
+                //if(!allSolutions[i].isValid()){
+                  //  throw new Exception("La solution i du beam n'est pas valide");
+                //}
             }
             Arrays.sort(allSolutions, new SolutionComparator());
             for(int i=0; i<B; i++){

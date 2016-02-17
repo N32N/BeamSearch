@@ -113,7 +113,7 @@ public class Planning {
      * @return
      */
     public boolean isValid() {
-        return checkStock();
+        return true;
     }
 
     public int objective() {
