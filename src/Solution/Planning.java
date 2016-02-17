@@ -11,6 +11,8 @@ public class Planning {
     private boolean isStockValid;   //If the planning respects the stock constraints
     private int fin;
 
+
+
     public Planning(Instance instance, Solution s) {
         this.instance = instance;
         this.planning = new int[s.getInstance().getNbM1() + s.getInstance().getNbM2()][s.getInstance().getNbJob()][3];
