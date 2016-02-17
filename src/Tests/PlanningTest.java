@@ -20,6 +20,8 @@ public class PlanningTest {
         System.out.println("----");
 
 
-        Solver solver = new Solver(new Instance("1M_3F.txt"));
+        Solver solver = new Solver(new Instance("3M_5F.txt"));
+        Solution sol = solver.firstSolution();
+        sol.printPlanning();
     }
 }
