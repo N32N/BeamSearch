@@ -41,11 +41,22 @@ public class Beam {
         for (int i=0; i<this.potential.size();i++){
             allSolutions[B+i]=this.potential.get(i);
         }
-        Arrays.sort(allSolutions, new SolutionComparator());
-        for(int i=0; i<B; i++){
-            this.beam[i] = allSolutions[i];
+        try{
+            for(int i=0; i< allSolutions.length; i++){
+                if(!allSolutions[i].isValid()){
+                    throw new Exception("La solution i du beam n'est pas valide");
+                }
+            }
+            Arrays.sort(allSolutions, new SolutionComparator());
+            for(int i=0; i<B; i++){
+                this.beam[i] = allSolutions[i];
+            }
+            this.potential.clear();
+        }catch (Exception e ){
+            e.printStackTrace();
         }
-        this.potential.clear();
+
+
     }
 
     /**
