@@ -161,7 +161,7 @@ public class Instance {
         this.jobs[0] = new Job(1, 0, 0, 1, 20);
         this.jobs[1] = new Job(2, 1, 2, 2, 20);
         this.jobs[2] = new Job(3, 3, 1, 3, 20);
-        this.jobs[3] = new Job(4, 1, 4, 3, 20);
+        this.jobs[3] = new Job(4, 1, 3, 3, 20);
         this.jobs[4] = new Job(5, 2, 2, 4, 20);
 
         this.stockCapa = new int[nbM2][3];
