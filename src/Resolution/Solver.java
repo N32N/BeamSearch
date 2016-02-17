@@ -2,6 +2,7 @@ package Resolution;
 
 import Instance.*;
 import Solution.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -34,16 +35,16 @@ public class Solver {
     }
 
     /**
-     * Méthode à appeler depuis la classe Main. Initialise une solution puis lance la beam search, pour retourner la meilleure solution trouvée
+     * Mï¿½thode ï¿½ appeler depuis la classe Main. Initialise une solution puis lance la beam search, pour retourner la meilleure solution trouvï¿½e
+     *
      * @param beamValue Nombre de solution dans le beam
      */
     public void solve(int beamValue) {
         solution = firstSolution();
-        //solution = beamSearch(beamValue);
+        solution = beamSearch(beamValue);
     }
 
     /**
-     *
      * @param beamValue
      * @return
      */
@@ -69,31 +70,33 @@ public class Solver {
         s.set();
         return s;
     }
-    public void EDD(Solution s, Job[] jobs, int stage){
+
+    public void EDD(Solution s, Job[] jobs, int stage) {
         int[] dd = new int[jobs.length];
         for (int j = 0; j < dd.length; j++) dd[j] = jobs[j].getDueDate();
 
         int[] dispo = null;
-        if(stage == 1 ) dispo = new int[instance.getNbM1()];
-        else if (stage == 2 ) dispo = new int[instance.getNbM2()];
+        if (stage == 1) dispo = new int[instance.getNbM1()];
+        else if (stage == 2) dispo = new int[instance.getNbM2()];
 
         for (int j = 0; j < jobs.length; j++) {
             int index = getMinIndex(dd);
-            int machineAvailable = getMinIndex(dispo)+1;
+            int machineAvailable = getMinIndex(dispo) + 1;
 
             s.addJob(jobs[index], stage, machineAvailable);
             dd[index] = Integer.MAX_VALUE;
-            dispo[machineAvailable-1]+= jobs[index].getQuantity();
+            dispo[machineAvailable - 1] += jobs[index].getQuantity();
         }
     }
+
     /**
      * @param tab
      * @return the index of the minimum value in tab
      */
     public int getMinIndex(int[] tab) {
-        int minIndex=0;
-        for(int i=1; i<tab.length;i++){
-            if(tab[i]<tab[minIndex]) minIndex =i;
+        int minIndex = 0;
+        for (int i = 1; i < tab.length; i++) {
+            if (tab[i] < tab[minIndex]) minIndex = i;
         }
         return minIndex;
     }
