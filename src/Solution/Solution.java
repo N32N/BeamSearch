@@ -15,18 +15,20 @@ public class Solution {
     public long getCost() {
         return cost;
     }
-    public boolean isValid(){
+
+    public boolean isValid() {
         return this.isValid;
     }
 
     /**
-     * Crée un planning à partir de la solution actuelle, afin de déterminer la validité de la solution et son coût.
+     * Crï¿½e un planning ï¿½ partir de la solution actuelle, afin de dï¿½terminer la validitï¿½ de la solution et son coï¿½t.
      */
-    public void set(){
+    public void set() {
         Planning planning = new Planning(instance, this);
         this.isValid = planning.isValid();
-        if(this.isValid) this.cost = planning.objective();
+        if (this.isValid) this.cost = planning.objective();
     }
+
     public Instance getInstance() {
         return instance;
     }
@@ -64,15 +66,17 @@ public class Solution {
 
     public ScheduledJob getLastJobFirstFloor(int machine) {
         ScheduledJob current = first;
-        if(machine!=getInstance().getNbM1()) while(current.getNext().getNumber() != -(machine + 1)) current = current.getNext();
-        else while(null!=current.getNext()) current = current.getNext();
+        if (machine != getInstance().getNbM1())
+            while (current.getNext().getNumber() != -(machine + 1)) current = current.getNext();
+        else while (null != current.getNext()) current = current.getNext();
         return current;
     }
 
     public ScheduledJob getLastJobSecondFloor(int machine) {
         ScheduledJob current = second;
-        if(machine!=getInstance().getNbM2()) while (current.getNext().getNumber() != -(machine + 1)) current = current.getNext();
-        else while(null!=current.getNext()) current = current.getNext();
+        if (machine != getInstance().getNbM2())
+            while (current.getNext().getNumber() != -(machine + 1)) current = current.getNext();
+        else while (null != current.getNext()) current = current.getNext();
         return current;
     }
 
@@ -88,6 +92,7 @@ public class Solution {
             last.setNext(job);
         }
     }
+
     public void addJob(Job job, int stage, int machine) {
         if (stage == 1) {
             ScheduledJob last = getLastJobFirstFloor(machine);
@@ -98,6 +103,7 @@ public class Solution {
             last.setNext(new ScheduledJob(job, last.getNext()));
         }
     }
+
     public void print() {
         System.out.println("_____M_____");
         ScheduledJob current = first;
@@ -112,31 +118,31 @@ public class Solution {
             current2 = current2.getNext();
         }
     }
-    public void printPlanning(){
+
+    public void printPlanning() {
         Planning p = new Planning(instance, this);
         p.print();
     }
+
     public Solution clone() {   //Create new ScheduledJobs (based on same jobs) and chains them
-        //TODO      //recursive
         Solution clone = new Solution(instance);
         ScheduledJob current = this.first;
         ScheduledJob newSol = new ScheduledJob(this.first);
         clone.first = newSol;
-        while(current.getNext() != null){//stage 1
+        while (current.getNext() != null) {//stage 1
             newSol.setNext(new ScheduledJob(current.getNext()));
-            newSol=newSol.getNext();
+            newSol = newSol.getNext();
             current = current.getNext();
         }
 
         ScheduledJob currentSecond = this.second;
         ScheduledJob newSolSecond = new ScheduledJob(this.second);
         clone.second = newSolSecond;
-        while (currentSecond.getNext() != null){
+        while (currentSecond.getNext() != null) {
             newSolSecond.setNext(new ScheduledJob(currentSecond.getNext()));
-            newSolSecond =newSolSecond.getNext();
+            newSolSecond = newSolSecond.getNext();
             currentSecond = currentSecond.getNext();
         }
         return clone;
     }
-
 }
