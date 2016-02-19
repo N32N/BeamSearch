@@ -24,7 +24,7 @@ public class Beam {
         for (int i = 0; i < iteration; i++) {
             for (int j = 0; j < B; j++)
                 if (procedure == "random")
-                    for (Solution fille : Procedures.random(beam[j].clone()))
+                    for (Solution fille : Procedures.randomSwitch(beam[j].clone()))
                         potential.add(fille);  //VERIFIER que le tableau est généré une seule fois
                 else if (procedure == "neh")
                     for (Solution fille : Procedures.neh(beam[j].clone())) potential.add(fille);   //idem

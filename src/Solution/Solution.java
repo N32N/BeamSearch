@@ -13,7 +13,7 @@ public class Solution {
     private boolean isValid;
     private int[][] machineUse;       //[nbMachines][3] : first job start / last job end / number oj jobs
 
-   public boolean isValid() {
+    public boolean isValid() {
         return this.isValid;
     }
 
@@ -61,7 +61,7 @@ public class Solution {
         return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][1];
     }
 
-    public int getNbJob(int stage, int machine){
+    public int getNbJob(int stage, int machine) {
         return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][2];
     }
 
@@ -136,8 +136,11 @@ public class Solution {
      * @return
      */
     public int getBusiestMachine(int stage) {
-        int nbM;    if (stage == 1) nbM = instance.getNbM1();   else nbM = instance.getNbM2();
-        int busiest = 0;    int end = 0;
+        int nbM;
+        if (stage == 1) nbM = instance.getNbM1();
+        else nbM = instance.getNbM2();
+        int busiest = 0;
+        int end = 0;
         for (int machine = 1; machine <= nbM; machine++) {
             int e = getEndUse(stage, machine);
             if (e > end) {
@@ -217,6 +220,27 @@ public class Solution {
     }
 
     public void swapTwo(int job1, int job2, int stage) {
+
+
+    }
+
+    public ScheduledJob[] getScheduledJobAndPrevious(int job, int stage) {
+        ScheduledJob[] jobs = new ScheduledJob[2];
+        ScheduledJob previous = null;
+        ScheduledJob current;
+        if (stage == 1) {
+            current = this.first;
+        } else {
+            current = this.second;
+        }
+        while (current.getNumber() != job) {
+            previous = current;
+            current = current.getNext();
+        }
+        jobs[0] = previous;
+        jobs[1] = current;
+
+        return jobs;
 
     }
 }
