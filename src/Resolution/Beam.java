@@ -21,15 +21,19 @@ public class Beam {
     }
 
     public void procedure(String procedure, int iteration) {
-        for (int i = 0; i < iteration; i++) {
-            for (int j = 0; j < B; j++)
+        for (int i = 0; i < iteration; i++)
+            for (int j = 0; j < B; j++){
                 if (procedure == "random")
                     for (Solution fille : Procedures.random(beam[j].clone()))
                         potential.add(fille);  //VERIFIER que le tableau est généré une seule fois
                 else if (procedure == "neh")
-                    for (Solution fille : Procedures.neh(beam[j].clone())) potential.add(fille);   //idem
+                    for (Solution fille : Procedures.neh(beam[j].clone()))
+                        potential.add(fille);   //idem
+                else if (procedure == "bmp")
+                    for (Solution fille : Procedures.bmp(beam[j].clone()))
+                        potential.add(fille);   //idem
             select();
-        }
+            }
     }
 
     /**
@@ -71,8 +75,7 @@ public class Beam {
      * @return the best solution from the beam
      */
     public Solution bestSolution() {
-        //beam[0].print();
-        System.out.println();
+        beam[0].printShort();
         return beam[0];
     }
 

@@ -19,18 +19,13 @@ public class BeamTest {
 
         System.out.println("FIRSTSOL cost : " + sol.getCost());
 
-        /*for (int a = 0; a < b.beam.length; a++)
-            b.beam[a].setCost(b.beam[a].getCost()+a);
-        Solution s32 = sol.clone();
-        s32.setCost(s32.getCost()+32);
-        b.potential.add(sol.clone());
-        b.potential.add(s32);
-*/
         b.procedure("random", 2000);
+        System.out.println("-------------------Après random-----------------------");
         b.print();
-        Planning p = new Planning(i,b.bestSolution());
-        p.print();
-        //b.select();
+        b.procedure("bmp", 20);
+        System.out.println("----------------------Après bmp--------------------------");
         //b.print();
+        System.out.println("---------------------Best solution---------------------------");
+        b.bestSolution();
     }
 }
