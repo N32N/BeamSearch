@@ -10,8 +10,11 @@ import Solution.Solution;
 public class SolverTest {
 
     public static void main(String[] args){
-        Solver s = new Solver(new Instance());
-        Solution solution = s.firstSolution();
+        Solver s = new Solver(new Instance("1M_3F.txt"));
+        s.solve(5);
+        Solution solution = s.getSolution();
+        //solution.print();
+        /*Solution solution = s.firstSolution();
         Solution solution2 = solution.clone();
         solution.print();
         solution2.print();
@@ -24,6 +27,6 @@ public class SolverTest {
         solver.getSolution().print();
         solver.getSolution().printPlanning();
         System.out.println(solver.getSolution().getCost());
-        System.out.println(solver.getSolution().isValid());
+        System.out.println(solver.getSolution().isValid());*/
     }
 }

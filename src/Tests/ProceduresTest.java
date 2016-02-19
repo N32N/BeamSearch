@@ -14,6 +14,9 @@ public class ProceduresTest {
         Solution mere = solver.firstSolution();
         Solution[] listSol = Procedures.random(mere);
         mere.print();
-        listSol[0].print();
+        Solution fille = mere.clone();
+        fille.swapTwo(1,2);
+        //fille.print();
+        listSol[1].print();
     }
 }

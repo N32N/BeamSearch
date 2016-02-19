@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public final class Procedures {
 
     public static Solution[] random(Solution mere) {
-        int nbSwaps = (mere.getInstance().getNbJob() / 10) + 1;
+        int nbSwaps =  10;//(mere.getInstance().getNbJob() / 10) + 1;
         Solution[] solutions = new Solution[nbSwaps];
         int i = 0;
         while (i < nbSwaps) {
@@ -38,7 +38,7 @@ public final class Procedures {
             }
             listJobs[i + 1] = secondJob;
         }
-        //On a une liste pair de job tous diff�rents
+        //On a une liste pair de job tous diff?rents
         int nbSolutions = nbJobsToSwitch * (nbJobsToSwitch - 1) / 2;
         for (int i = 0; i < nbJobsToSwitch - 1; i++) {
             for (int j = i + 1; j < nbJobsToSwitch; j++) {
@@ -68,8 +68,8 @@ public final class Procedures {
     }
 
     /**
-     * Selectionne un job dans une des machines les plus utilis�e. Le place sur une des autres machine
-     * Si 1 seule machine au niveau 1, ne s'�x�cute que pour le niveau 2
+     * Selectionne un job dans une des machines les plus utilis?e. Le place sur une des autres machine
+     * Si 1 seule machine au niveau 1, ne s'?x?cute que pour le niveau 2
      *
      * @param mere
      * @return

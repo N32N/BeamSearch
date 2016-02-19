@@ -2,6 +2,8 @@ package Solution;
 
 import Instance.*;
 
+import java.util.ArrayList;
+
 /**
  * Created by n on 08/02/16.
  */
@@ -247,5 +249,14 @@ public class Solution {
         jobs[0] = previous;
         jobs[1] = current;
         return jobs;
+    }
+    public boolean isNotIn(ArrayList<Solution> allSolution){
+        boolean isIn = false;
+        for(int i=0; i<allSolution.size(); i++){
+            if(this.cost == allSolution.get(i).getCost()){
+                return false;
+            }
+        }
+        return true;
     }
 }

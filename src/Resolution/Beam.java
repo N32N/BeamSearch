@@ -24,7 +24,7 @@ public class Beam {
         for (int i = 0; i < iteration; i++) {
             for (int j = 0; j < B; j++)
                 if (procedure == "random")
-                    for (Solution fille : Procedures.randomSwitch(beam[j].clone()))
+                    for (Solution fille : Procedures.random(beam[j].clone()))
                         potential.add(fille);  //VERIFIER que le tableau est généré une seule fois
                 else if (procedure == "neh")
                     for (Solution fille : Procedures.neh(beam[j].clone())) potential.add(fille);   //idem
@@ -37,22 +37,29 @@ public class Beam {
      * et les ordonne dans le beam selon le co�t (meilleures solutions en premier)
      */
     public void select() {
-        Solution[] allSolutions = new Solution[B + potential.size()];
+        ArrayList<Solution> allSolutions = new ArrayList<Solution>();
         for (int i = 0; i < B; i++)
-            allSolutions[i] = beam[i];
+            if(beam[i].isNotIn(allSolutions))
+                allSolutions.add(beam[i]);
         for (int i = 0; i < this.potential.size(); i++)
-            allSolutions[B + i] = this.potential.get(i);
-
+            if(this.potential.get(i).isNotIn(allSolutions))
+                allSolutions.add(this.potential.get(i));
+        int size = allSolutions.size();
+        Solution[] differentSolutions = new Solution[size];
+        for (int i=0; i<size;i++){
+            differentSolutions[i]= allSolutions.get(i);
+        }
         try {
-            for (int i = 0; i < allSolutions.length; i++) {
-                if (allSolutions[i].getCost() == 0)
+            for (int i = 0; i < allSolutions.size(); i++) {
+                if (allSolutions.get(i).getCost() == 0)
                     throw new Exception("cout nul");
-                if (!allSolutions[i].isValid())
+                if (!allSolutions.get(i).isValid())
                     throw new Exception("La solution "+i+" du beam n'est pas valide");
             }
-            Arrays.sort(allSolutions, new SolutionComparator());
-            for (int i = 0; i < B; i++)
-                this.beam[i] = allSolutions[i];
+            Arrays.sort(differentSolutions, new SolutionComparator());
+            for (int i = 0; i < B; i++) {
+                this.beam[i] = differentSolutions[i];
+            }
             this.potential.clear();
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,7 +70,8 @@ public class Beam {
      * @return the best solution from the beam
      */
     public Solution bestSolution() {
-        beam[0].print();
+        //beam[0].print();
+        System.out.println();
         return beam[0];
     }
 
