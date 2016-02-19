@@ -50,8 +50,6 @@ public final class Procedures {
 
 
     /**
-     *
-     *
      * @param mere
      * @return
      */
@@ -118,10 +116,17 @@ public final class Procedures {
             if (current.getNumber() == -busiest) active = false;
             if (active) {
                 Solution fille = missOneJob.clone();
-                ScheduledJob[] pair = fille.getScheduledJobAndPrevious(current.getNext().getNumber(), stage);
-                pair[0].setNext(new ScheduledJob(j, pair[1]));
+                ScheduledJob[] pair;
+                if (null != current.getNext()) {
+                    pair = fille.getScheduledJobAndPrevious(current.getNext().getNumber(), stage);
+                    pair[0].setNext(new ScheduledJob(j, pair[1]));
+                }
+                else{
+                    pair = fille.getScheduledJobAndPrevious(current.getNumber(), stage);
+                    pair[1].setNext(new ScheduledJob(j, null));
+                }
                 fille.set();
-                if(fille.isValid()) result.add(fille);
+                if (fille.isValid()) result.add(fille);
             }
             current = current.getNext();
         }

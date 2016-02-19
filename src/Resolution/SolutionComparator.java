@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * Created by Maxterfike on 17/02/2016.
  */
-class SolutionComparator implements Comparator<Solution> {
+public class SolutionComparator implements Comparator<Solution> {
 
     @Override
     /**
