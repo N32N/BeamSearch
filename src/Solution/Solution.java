@@ -89,6 +89,11 @@ public class Solution {
         this.machineUse = new int[instance.getNbM1() + instance.getNbM2()][3];
     }
 
+    public ScheduledJob getLastJob(int machine, int stage){
+        if(stage == 1) return getLastJobFirstFloor(machine);
+        else return getLastJobSecondFloor(machine);
+    }
+
     public ScheduledJob getLastJobFirstFloor(int machine) {
         ScheduledJob current = first;
         if (machine != getInstance().getNbM1())
