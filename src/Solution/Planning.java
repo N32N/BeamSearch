@@ -21,19 +21,19 @@ public class Planning {
         int machine = 0;
         int time = 0;
         int line = 0;
-        while (null != currentFirst) {//Tan qu'on a pas fait chaque scheduledJob de du premier étage, on contiue à lire
-            if (currentFirst.getNumber() < 0) {////Si le job est un marqueur pour une machine
-                machine = -currentFirst.getNumber();//On change la machine actuelle
+        while (null != currentFirst) {         //Tant qu'on a pas fait chaque scheduledJob du premier étage, on continue à lire
+            if (currentFirst.getNumber() < 0) {         //Si le job est un marqueur pour une machine
+                machine = -currentFirst.getNumber();    //On change la machine actuelle
                 line = 0;
                 time = 0;
-            } else {//Si le scheduledJob est un Job
+            } else {                                    //Si le scheduledJob est un Job
                 planning[machine - 1][line][0] = currentFirst.getNumber();//On ajoute le job au planning, à la ligne suivante
-                planning[machine - 1][line][1] = time;//Date de lancement de productiondu job
-                time += currentFirst.getQuantity(); //ajout processTime de currentFirst sur machine
-                planning[machine - 1][line][2] = time;//Date de fin de production du job
+                planning[machine - 1][line][1] = time;  //Date de lancement de productiondu job
+                time += currentFirst.getQuantity();     //ajout processTime de currentFirst sur machine
+                planning[machine - 1][line][2] = time;  //Date de fin de production du job
                 if (null != nextFirst && nextFirst.getNumber() > 0) {
                     time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getProduct(), nextFirst.getProduct());
-                    //time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getNumber(), nextFirst.getNumber()); //ajout setUpTime entre currentFirst et nextFirst sur machine
+                                                        //ajout setUpTime entre currentFirst et nextFirst sur machine
                     if (time > fin) fin = time;
                     line++;
                 }
@@ -113,7 +113,7 @@ public class Planning {
      * @return
      */
     public boolean isValid() {
-        return true;
+        return checkStock() && allJobOk() && allMachinesOk();
     }
 
     public int objective() {
@@ -138,6 +138,25 @@ public class Planning {
         } else return planning[machine][j][2];
     }
 
+    /**
+     * @return true if all jobs are scheduled once at both floors
+     */
+    public boolean allJobOk(){
+        //TODO
+        return true;
+    }
+
+    /**
+     * @return true if no more mahines are used than possible at both floors
+     */
+    public boolean allMachinesOk(){
+        //TODO
+        return true;
+    }
+
+    /**
+     * @return true if no more than 3 jobs (with quantities lower than the capacities) are wainting between 1 machine at 2nd floor
+     */
     public boolean checkStock() {
         //Prepare stocks for every machine at second floor
         Stock[] stocks = new Stock[instance.getNbM2()];
