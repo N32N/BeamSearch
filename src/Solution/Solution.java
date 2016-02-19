@@ -224,8 +224,9 @@ public class Solution {
         ScheduledJob[] jobs2 = getScheduledJobAndPrevious(job2, stage);
         jobs1[0].setNext(jobs2[1]);
         jobs2[0].setNext(jobs1[1]);
+        ScheduledJob s = jobs1[1].getNext();
         jobs1[1].setNext(jobs2[1].getNext());
-        jobs2[1].setNext(jobs1[1].getNext());
+        jobs2[1].setNext(s);
     }
 
     public ScheduledJob[] getScheduledJobAndPrevious(int job, int stage) {

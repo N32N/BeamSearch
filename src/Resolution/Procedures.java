@@ -75,6 +75,10 @@ public final class Procedures {
         ArrayList<Solution> list = new ArrayList<>();
         int busiest = mere.getBusiestMachine(stage);
         ScheduledJob c = null;
+        while(c.getNumber()>0){
+
+            c=c.getNext();
+        }
         return tab(list);
     }
 
