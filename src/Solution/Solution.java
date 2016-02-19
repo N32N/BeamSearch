@@ -38,7 +38,6 @@ public class Solution {
     public long getCost() {
         return cost;
     }
-
     public boolean isValid() {
         return this.isValid;
     }
@@ -251,12 +250,18 @@ public class Solution {
         return jobs;
     }
     public boolean isNotIn(ArrayList<Solution> allSolution){
-        boolean isIn = false;
-        for(int i=0; i<allSolution.size(); i++){
-            if(this.cost == allSolution.get(i).getCost()){
-                return false;
-            }
-        }
+        for(Solution sol:allSolution)
+            if(equals(sol)) return false;
+        return true;
+    }
+
+    public boolean equals (Solution sol){
+        if(this.cost != sol.getCost()) return false;
+        if(this.isValid != sol.isValid()) return false;
+        for(int k=0; k<this.machineUse.length;k++)
+                for(int l=0; l<this.machineUse[0].length; l++)
+                    if(this.machineUse[k][l] != sol.machineUse[k][l])
+                        return false;
         return true;
     }
 }
