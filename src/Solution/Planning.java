@@ -7,7 +7,7 @@ import Instance.*;
  */
 public class Planning {
     private Instance instance;
-    private int[][][] planning;     //Planning[machine][lines of the jobs][number-beginTime-endTime]
+    public int[][][] planning;     //Planning[machine][lines of the jobs][number-beginTime-endTime]
     private int fin;
     private int lateTime;
 
@@ -178,5 +178,11 @@ public class Planning {
     public int date(int machine, int line) {
         if (machine < instance.getNbM1()) return planning[machine][line][2];
         else return planning[machine][line][1];
+    }
+
+    public int getEnd(int machine){
+        int line = 0;
+        while(planning[machine][line][0] != 0) line ++;
+        return planning[machine][line - 1][2];
     }
 }

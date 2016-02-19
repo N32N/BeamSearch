@@ -11,6 +11,7 @@ public class Solution {
     private ScheduledJob second;
     private long cost;
     private boolean isValid;
+    private int[][] machineUse;       //[nbMachines][2] : first job start / last job end
 
     public long getCost() {
         return cost;
@@ -26,11 +27,17 @@ public class Solution {
     public void set() {
         Planning planning = new Planning(instance, this);
         this.isValid = planning.isValid();
-        if (this.isValid) this.cost = planning.objective();
+        if (this.isValid){
+            this.cost = planning.objective();
+            for(int m = 0; m < machineUse.length; m++){
+                machineUse[m][0] = planning.planning[m][0][1];
+                machineUse[m][1] = planning.getEnd(m);
+            }
+        }
     }
 
-    public void setCost(long c){
-        this.cost=c;
+    public void setCost(long c) {
+        this.cost = c;
     }
 
     public Instance getInstance() {
@@ -43,6 +50,14 @@ public class Solution {
 
     public ScheduledJob getSecond() {
         return second;
+    }
+
+    public int getStartUse(int stage, int machine) {
+        return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][0];
+    }
+
+    public int getEndUse(int stage, int machine) {
+        return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][1];
     }
 
     public Solution(Instance instance) {
@@ -66,6 +81,7 @@ public class Solution {
 
         this.isValid = false;
         this.cost = Integer.MAX_VALUE;
+        this.machineUse = new int[instance.getNbM1()+instance.getNbM2()][2];
     }
 
     public ScheduledJob getLastJobFirstFloor(int machine) {
@@ -110,12 +126,14 @@ public class Solution {
 
     /**
      * Retourne la machine finissant de produire le plus tôt.
+     *
      * @param stage
      * @return
      */
-    public int getBusiestMachine(int stage){
+    public int getBusiestMachine(int stage) {
         return 1;
     }
+
     public void print() {
         System.out.println("_____M_____");
         ScheduledJob current = first;
@@ -131,8 +149,8 @@ public class Solution {
         }
     }
 
-    public void printShort(){
-        System.out.println("--Solution--cost : "+getCost()+"--"+isValid()+"--");
+    public void printShort() {
+        System.out.println("--Solution--cost : " + getCost() + "--" + isValid() + "--");
         System.out.print("M");
         ScheduledJob current = first;
         while (current != null) {
@@ -174,18 +192,17 @@ public class Solution {
             currentSecond = currentSecond.getNext();
         }
 
-        clone.cost=cost;
-        clone.isValid=isValid;
+        clone.cost = cost;
+        clone.isValid = isValid;
         return clone;
     }
 
-    public void swapTwo (int job1, int job2){
+    public void swapTwo(int job1, int job2) {
         swapTwo(job1, job2, 1);
         swapTwo(job1, job2, 2);
-
     }
 
-    public void swapTwo (int job1, int job2, int stage){
+    public void swapTwo(int job1, int job2, int stage) {
 
     }
 }
