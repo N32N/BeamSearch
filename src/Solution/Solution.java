@@ -108,6 +108,14 @@ public class Solution {
         }
     }
 
+    /**
+     * Retourne la machine finissant de produire le plus tôt.
+     * @param stage
+     * @return
+     */
+    public int getBusiestMachine(int stage){
+        return 1;
+    }
     public void print() {
         System.out.println("_____M_____");
         ScheduledJob current = first;
