@@ -39,27 +39,28 @@ public class Beam {
     public void select() {
         ArrayList<Solution> allSolutions = new ArrayList<Solution>();
         for (int i = 0; i < B; i++)
-            if(beam[i].isNotIn(allSolutions))
+            if (beam[i].isNotIn(allSolutions))
                 allSolutions.add(beam[i]);
         for (int i = 0; i < this.potential.size(); i++)
-            if(this.potential.get(i).isNotIn(allSolutions))
+            if (this.potential.get(i).isNotIn(allSolutions))
                 allSolutions.add(this.potential.get(i));
-        int size = allSolutions.size();
-        Solution[] differentSolutions = new Solution[size];
-        for (int i=0; i<size;i++){
-            differentSolutions[i]= allSolutions.get(i);
+        Solution[] differentSolutions = new Solution[allSolutions.size()];
+        int in = 0;
+        for (Solution s : allSolutions) {
+            differentSolutions[in] = s;
+            in++;
         }
         try {
             for (int i = 0; i < allSolutions.size(); i++) {
                 if (allSolutions.get(i).getCost() == 0)
                     throw new Exception("cout nul");
                 if (!allSolutions.get(i).isValid())
-                    throw new Exception("La solution "+i+" du beam n'est pas valide");
+                    throw new Exception("La solution " + i + " du beam n'est pas valide");
             }
             Arrays.sort(differentSolutions, new SolutionComparator());
-            for (int i = 0; i < B; i++) {
+            for (int i = 0; i < B; i++)
                 this.beam[i] = differentSolutions[i];
-            }
+
             this.potential.clear();
         } catch (Exception e) {
             e.printStackTrace();

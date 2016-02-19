@@ -10,10 +10,14 @@ import Solution.Solution;
 public class SolverTest {
 
     public static void main(String[] args){
-        Solver s = new Solver(new Instance("1M_3F.txt"));
+        Solver s = new Solver(new Instance("3M_5F.txt"));
         s.solve(5);
-        Solution solution = s.getSolution();
-        //solution.print();
+        Solution first = s.firstSolution();
+        Solution best = s.getSolution();
+        System.out.println("FIRST");
+        first.printShort();
+        System.out.println("BEST");
+        best.printShort();
         /*Solution solution = s.firstSolution();
         Solution solution2 = solution.clone();
         solution.print();
