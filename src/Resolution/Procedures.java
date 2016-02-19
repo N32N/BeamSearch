@@ -73,7 +73,19 @@ public final class Procedures {
 
     public static Solution[] bmp(Solution mere, int stage){
         ArrayList<Solution> list = new ArrayList<>();
-        ScheduledJob c =
+        int busiest = mere.getBusiestMachine(stage);
+        ScheduledJob c = null;
         return tab(list);
+    }
+
+    public static Solution[] tab(ArrayList<Solution> list){
+        int size = list.size();
+        Solution[] tab = new Solution[size];
+        int i = 0;
+        for (Solution s:list) {
+            tab[i] = s;
+            i++;
+        }
+        return tab;
     }
 }
