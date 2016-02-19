@@ -220,8 +220,12 @@ public class Solution {
     }
 
     public void swapTwo(int job1, int job2, int stage) {
-
-
+        ScheduledJob[] jobs1 = getScheduledJobAndPrevious(job1, stage);
+        ScheduledJob[] jobs2 = getScheduledJobAndPrevious(job2, stage);
+        jobs1[0].setNext(jobs2[1]);
+        jobs2[0].setNext(jobs1[1]);
+        jobs1[1].setNext(jobs2[1].getNext());
+        jobs2[1].setNext(jobs1[1].getNext());
     }
 
     public ScheduledJob[] getScheduledJobAndPrevious(int job, int stage) {

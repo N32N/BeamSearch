@@ -13,6 +13,7 @@ public class ProceduresTest {
         Solver solver = new Solver(new Instance("1M_3F.txt"));
         Solution mere = solver.firstSolution();
         Solution[] listSol = Procedures.random(mere);
-
+        mere.print();
+        listSol[0].print();
     }
 }
