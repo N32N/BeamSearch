@@ -13,10 +13,6 @@ public class Solution {
     private boolean isValid;
     private int[][] machineUse;       //[nbMachines][3] : first job start / last job end / number oj jobs
 
-    public boolean isValid() {
-        return this.isValid;
-    }
-
     /**
      * Cr�e un planning � partir de la solution actuelle, afin de d�terminer la validit� de la solution et son co�t.
      */
@@ -39,6 +35,10 @@ public class Solution {
 
     public long getCost() {
         return cost;
+    }
+
+    public boolean isValid() {
+        return this.isValid;
     }
 
     public Instance getInstance() {
@@ -232,19 +232,14 @@ public class Solution {
         ScheduledJob[] jobs = new ScheduledJob[2];
         ScheduledJob previous = null;
         ScheduledJob current;
-        if (stage == 1) {
-            current = this.first;
-        } else {
-            current = this.second;
-        }
+        if (stage == 1) current = this.first;
+        else current = this.second;
         while (current.getNumber() != job) {
             previous = current;
             current = current.getNext();
         }
         jobs[0] = previous;
         jobs[1] = current;
-
         return jobs;
-
     }
 }

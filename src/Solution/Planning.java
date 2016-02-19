@@ -181,7 +181,6 @@ public class Planning {
     }
 
     /**
-     *
      * @param machine
      * @return int[endTime][nbJob on the machine]
      */

@@ -38,7 +38,7 @@ public final class Procedures {
             }
             listJobs[i + 1] = secondJob;
         }
-        //On a une liste pair de job tous différents
+        //On a une liste pair de job tous diffï¿½rents
         int nbSolutions = nbJobsToSwitch*(nbJobsToSwitch-1)/2;
         for (int i = 0; i < nbJobsToSwitch-1; i++) {
             for(int j=i+1; j < nbJobsToSwitch;j++){
@@ -50,7 +50,7 @@ public final class Procedures {
 
 
     /**
-     * Selectionne un job arbitrairement, le place à tout emplacement possible dans la solution
+     * Selectionne un job arbitrairement, le place ï¿½ tout emplacement possible dans la solution
      *
      * @param mere
      * @return
@@ -60,15 +60,20 @@ public final class Procedures {
     }
 
     /**
-     * Selectionne un job dans une des machines les plus utilisée. Le place sur une des autres machine
-     * Si 1 seule machine au niveau 1, ne s'éxécute que pour le niveau 2
+     * Selectionne un job dans une des machines les plus utilisï¿½e. Le place sur une des autres machine
+     * Si 1 seule machine au niveau 1, ne s'ï¿½xï¿½cute que pour le niveau 2
      *
      * @param mere
      * @return
      */
     public static Solution[] bmp(Solution mere) {
-        Solution sol = mere.clone();
+        int stage = 2;
+        return bmp(mere, stage);
+    }
 
-        return null;
+    public static Solution[] bmp(Solution mere, int stage){
+        ArrayList<Solution> list = new ArrayList<>();
+        ScheduledJob c =
+        return tab(list);
     }
 }
