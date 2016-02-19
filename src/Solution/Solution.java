@@ -29,6 +29,10 @@ public class Solution {
         if (this.isValid) this.cost = planning.objective();
     }
 
+    public void setCost(long c){
+        this.cost=c;
+    }
+
     public Instance getInstance() {
         return instance;
     }
@@ -119,6 +123,24 @@ public class Solution {
         }
     }
 
+    public void printShort(){
+        System.out.println("--Solution--cost : "+getCost()+"--"+isValid()+"--");
+        System.out.print("M");
+        ScheduledJob current = first;
+        while (current != null) {
+            System.out.print("-" + current.getNumber());
+            current = current.getNext();
+        }
+        System.out.println("");
+        System.out.print("F");
+        ScheduledJob current2 = second;
+        while (current2 != null) {
+            System.out.print("-" + current2.getNumber());
+            current2 = current2.getNext();
+        }
+        System.out.println("");
+    }
+
     public void printPlanning() {
         Planning p = new Planning(instance, this);
         p.print();
@@ -143,6 +165,19 @@ public class Solution {
             newSolSecond = newSolSecond.getNext();
             currentSecond = currentSecond.getNext();
         }
+
+        clone.cost=cost;
+        clone.isValid=isValid;
         return clone;
+    }
+
+    public void swapTwo (int job1, int job2){
+        swapTwo(job1, job2, 1);
+        swapTwo(job1, job2, 2);
+
+    }
+
+    public void swapTwo (int job1, int job2, int stage){
+
     }
 }
