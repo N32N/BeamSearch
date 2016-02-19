@@ -18,12 +18,13 @@ public class BeamTest {
         Beam b = new Beam(5, sol);
 
         System.out.println("FIRSTSOL cost : " + sol.getCost());
+        System.out.println(sol.isValid());
 
-        b.procedure("random", 2000);
-        System.out.println("-------------------Après random-----------------------");
+        b.procedure("random", 2);
+        System.out.println("-------------------Aprï¿½s random-----------------------");
         b.print();
-        b.procedure("bmp", 20);
-        System.out.println("----------------------Après bmp--------------------------");
+        //b.procedure("bmp", 20);
+        System.out.println("----------------------Aprï¿½s bmp--------------------------");
         //b.print();
         System.out.println("---------------------Best solution---------------------------");
         b.bestSolution();

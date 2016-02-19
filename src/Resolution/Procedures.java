@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public final class Procedures {
 
     public static Solution[] random(Solution mere) {
-        int nbSwaps =  10;//(mere.getInstance().getNbJob() / 10) + 1;
+        int nbSwaps =  (mere.getInstance().getNbJob() / 10) + 1;
         Solution[] solutions = new Solution[nbSwaps];
         int i = 0;
         while (i < nbSwaps) {

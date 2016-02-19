@@ -33,7 +33,7 @@ public class Planning {
                 planning[machine - 1][line][2] = time;  //Date de fin de production du job
                 if (null != nextFirst && nextFirst.getNumber() > 0) {
                     time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getProduct(), nextFirst.getProduct());
-                                                        //ajout setUpTime entre currentFirst et nextFirst sur machine
+                    //ajout setUpTime entre currentFirst et nextFirst sur machine
                     if (time > fin) fin = time;
                     line++;
                 }
@@ -113,7 +113,7 @@ public class Planning {
      * @return
      */
     public boolean isValid() {
-        return checkStock() && allJobOk() && allMachinesOk();
+        return checkStock() && allJobOk();
     }
 
     public int objective() {
@@ -141,16 +141,19 @@ public class Planning {
     /**
      * @return true if all jobs are scheduled once at both floors
      */
-    public boolean allJobOk(){
-        //TODO
-        return true;
-    }
+    public boolean allJobOk() {
+        boolean[] jobs = new boolean[instance.getNbJob()];
+        for (int j = 0; j < jobs.length; j++) jobs[j] = false;
 
-    /**
-     * @return true if no more mahines are used than possible at both floors
-     */
-    public boolean allMachinesOk(){
-        //TODO
+        for (int m = 0; m < planning.length; m++) {
+            int line = 0;
+            while (line < planning[m].length && planning[m][line][0] > 0) {
+                if (jobs[planning[m][line][0]]) return false;
+                else jobs[planning[m][line][0]] = true;
+                line++;
+            }
+        }
+        for (int j = 0; j < jobs.length; j++) if (!jobs[j]) return false;
         return true;
     }
 
@@ -161,7 +164,7 @@ public class Planning {
         //Prepare stocks for every machine at second floor
         Stock[] stocks = new Stock[instance.getNbM2()];
         for (int s = 0; s < stocks.length; s++)
-            stocks[s] = new Stock(instance, instance.getStockCapa(instance.getNbM1() + s));
+            stocks[s] = new Stock(instance, instance.getStockCapa(s));
         // cursors
         int[] indexMachine = new int[planning.length];
         for (int i = 0; i < indexMachine.length; i++)
@@ -180,10 +183,10 @@ public class Planning {
                 }
             // change the stocks according to the current jobs finishing at 1st floor or starting at 2nd floor
             if (machine < instance.getNbM1()) {
-                stocks[machine].add(instance.getJob(planning[machine][job][0]).getQuantity());
+                stocks[machine].add(instance.getJob(planning[machine][job][0] - 1).getQuantity());
                 if (!stocks[machine].isValid()) return false;
             } else
-                stocks[machine - instance.getNbM1()].remove(-instance.getJob(planning[machine][job][0]).getQuantity());
+                stocks[machine - instance.getNbM1()].remove(-instance.getJob(planning[machine][job][0] - 1).getQuantity());
 
             indexMachine[machine]++;
             end = true;
