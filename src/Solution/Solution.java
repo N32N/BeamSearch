@@ -11,13 +11,9 @@ public class Solution {
     private ScheduledJob second;
     private long cost;
     private boolean isValid;
-    private int[][] machineUse;       //[nbMachines][2] : first job start / last job end
+    private int[][] machineUse;       //[nbMachines][3] : first job start / last job end / number oj jobs
 
-    public long getCost() {
-        return cost;
-    }
-
-    public boolean isValid() {
+   public boolean isValid() {
         return this.isValid;
     }
 
@@ -27,17 +23,22 @@ public class Solution {
     public void set() {
         Planning planning = new Planning(instance, this);
         this.isValid = planning.isValid();
-        if (this.isValid){
+        if (this.isValid) {
             this.cost = planning.objective();
-            for(int m = 0; m < machineUse.length; m++){
+            for (int m = 0; m < machineUse.length; m++) {
                 machineUse[m][0] = planning.planning[m][0][1];
-                machineUse[m][1] = planning.getEnd(m);
+                machineUse[m][1] = planning.getEnd(m)[0];
+                machineUse[m][2] = planning.getEnd(m)[1];
             }
         }
     }
 
     public void setCost(long c) {
         this.cost = c;
+    }
+
+    public long getCost() {
+        return cost;
     }
 
     public Instance getInstance() {
@@ -58,6 +59,10 @@ public class Solution {
 
     public int getEndUse(int stage, int machine) {
         return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][1];
+    }
+
+    public int getNbJob(int stage, int machine){
+        return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][2];
     }
 
     public Solution(Instance instance) {
@@ -81,7 +86,7 @@ public class Solution {
 
         this.isValid = false;
         this.cost = Integer.MAX_VALUE;
-        this.machineUse = new int[instance.getNbM1()+instance.getNbM2()][2];
+        this.machineUse = new int[instance.getNbM1() + instance.getNbM2()][3];
     }
 
     public ScheduledJob getLastJobFirstFloor(int machine) {
@@ -131,7 +136,16 @@ public class Solution {
      * @return
      */
     public int getBusiestMachine(int stage) {
-        return 1;
+        int nbM;    if (stage == 1) nbM = instance.getNbM1();   else nbM = instance.getNbM2();
+        int busiest = 0;    int end = 0;
+        for (int machine = 1; machine <= nbM; machine++) {
+            int e = getEndUse(stage, machine);
+            if (e > end) {
+                end = e;
+                busiest = machine;
+            }
+        }
+        return busiest;
     }
 
     public void print() {

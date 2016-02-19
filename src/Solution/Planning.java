@@ -103,7 +103,7 @@ public class Planning {
                 i++;
             }
         }
-        System.out.println("Objective = "+this.objective()+" (end = "+this.fin+", late = "+this.lateTime+")");
+        System.out.println("Objective = " + this.objective() + " (end = " + this.fin + ", late = " + this.lateTime + ")");
     }
 
     /**
@@ -180,9 +180,17 @@ public class Planning {
         else return planning[machine][line][1];
     }
 
-    public int getEnd(int machine){
+    /**
+     *
+     * @param machine
+     * @return int[endTime][nbJob on the machine]
+     */
+    public int[] getEnd(int machine) {
+        int[] ret = new int[2];
         int line = 0;
-        while(planning[machine][line][0] != 0) line ++;
-        return planning[machine][line - 1][2];
+        while (line < planning[machine].length && planning[machine][line][0] != 0) line++;
+        ret[0] = planning[machine][line - 1][2];
+        ret[1] = line;
+        return ret;
     }
 }
