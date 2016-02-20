@@ -10,7 +10,7 @@ import Solution.Solution;
 public class SolverTest {
 
     public static void main(String[] args){
-        Solver s = new Solver(new Instance("3M_5F.txt"));
+        Solver s = new Solver(new Instance("known.txt"));
         s.solve(5);
         Solution first = s.firstSolution();
         Solution best = s.getSolution();

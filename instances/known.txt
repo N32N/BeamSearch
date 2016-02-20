@@ -1,0 +1,30 @@
+nbM1 1
+nbM2 3
+nbJob 6
+nbProd 3
+nbTypes 2
+coutProd 1
+coutPenalite 10
+setUp
+0 0 0
+1 0 1
+1 0 0
+duration
+0.5 2.0
+1.0 1.0
+3.0 0.2
+setUpTimeM
+2
+setUpTimeF
+4 5 6
+jobs
+1 0 0 32 50
+2 0 1 16 200
+3 1 0 20 175
+4 1 1 26 75
+5 2 0 23 100
+6 2 1 30 150
+stockCapa
+10 10 10
+15 15 25
+20 20 20
