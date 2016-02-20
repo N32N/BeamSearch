@@ -12,7 +12,7 @@ public class BeamTest {
 
     public static void main(String[] args) {
 
-        Instance i = new Instance("3M_5F.txt");
+        Instance i = new Instance("1M_3F.txt");
         Solver s = new Solver(i);
         Solution sol = s.firstSolution();
         Beam b = new Beam(5, sol);

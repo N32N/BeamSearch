@@ -158,33 +158,26 @@ public class Solution {
     }
 
     public void print() {
-        System.out.println("_____M_____");
-        ScheduledJob current = first;
-        while (current != null) {
-            System.out.println("number " + current.getNumber());
-            current = current.getNext();
-        }
-        System.out.println("_____F_____");
-        ScheduledJob current2 = second;
-        while (current2 != null) {
-            System.out.println("number " + current2.getNumber());
-            current2 = current2.getNext();
-        }
+        this.printShort();
+        for(int m = 0; m < machineUse.length; m++)
+            System.out.println("- Machine "+m+" : "+machineUse[m][0]+" - "+machineUse[m][1]+" ("+machineUse[m][2]+" jobs)");
     }
 
     public void printShort() {
         System.out.println("--Solution--cost : " + getCost() + "--" + isValid() + "--");
-        System.out.print("M");
+        System.out.print("M ");
         ScheduledJob current = first;
         while (current != null) {
-            System.out.print("-" + current.getNumber());
+            if(current.getNumber() > 0)     System.out.print(" " + current.getNumber());
+            else                            System.out.print("  /" + -current.getNumber() + " :");
             current = current.getNext();
         }
         System.out.println("");
-        System.out.print("F");
+        System.out.print("F ");
         ScheduledJob current2 = second;
         while (current2 != null) {
-            System.out.print("-" + current2.getNumber());
+            if(current2.getNumber() > 0)    System.out.print(" " + current2.getNumber());
+            else                            System.out.print("  /" + -current2.getNumber() + " :");
             current2 = current2.getNext();
         }
         System.out.println("");

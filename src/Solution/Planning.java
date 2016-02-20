@@ -113,7 +113,7 @@ public class Planning {
      * @return
      */
     public boolean isValid() {
-        return checkStock() && allJobOk();
+        return /*checkStock() &&*/ allJobOk();
     }
 
     public int objective() {
@@ -142,18 +142,32 @@ public class Planning {
      * @return true if all jobs are scheduled once at both floors
      */
     public boolean allJobOk() {
-        boolean[] jobs = new boolean[instance.getNbJob()];
-        for (int j = 0; j < jobs.length; j++) jobs[j] = false;
+        boolean[] jobs1 = new boolean[instance.getNbJob()];
+        for (int j = 0; j < jobs1.length; j++) jobs1[j] = false;
 
-        for (int m = 0; m < planning.length; m++) {
+        for (int m = 0; m < instance.getNbM1(); m++) {
             int line = 0;
             while (line < planning[m].length && planning[m][line][0] > 0) {
-                if (jobs[planning[m][line][0]]) return false;
-                else jobs[planning[m][line][0]] = true;
+                if (jobs1[planning[m][line][0] - 1]) return false;
+                else jobs1[planning[m][line][0] - 1] = true;
                 line++;
             }
         }
-        for (int j = 0; j < jobs.length; j++) if (!jobs[j]) return false;
+
+        boolean[] jobs2 = new boolean[instance.getNbJob()];
+        for (int j = 0; j < jobs2.length; j++) jobs2[j] = false;
+
+        for (int m = instance.getNbM1(); m < planning.length; m++) {
+            int line = 0;
+            while (line < planning[m].length && planning[m][line][0] > 0) {
+                if (jobs2[planning[m][line][0] - 1]) return false;
+                else jobs2[planning[m][line][0] - 1] = true;
+                line++;
+            }
+        }
+
+        for (int j = 0; j < jobs1.length; j++) if (!jobs1[j]) return false;
+        for (int j = 0; j < jobs2.length; j++) if (!jobs2[j]) return false;
         return true;
     }
 
@@ -182,11 +196,12 @@ public class Planning {
                     job = indexMachine[i];
                 }
             // change the stocks according to the current jobs finishing at 1st floor or starting at 2nd floor
-            if (machine < instance.getNbM1()) {
-                stocks[machine].add(instance.getJob(planning[machine][job][0] - 1).getQuantity());
-                if (!stocks[machine].isValid()) return false;
-            } else
-                stocks[machine - instance.getNbM1()].remove(-instance.getJob(planning[machine][job][0] - 1).getQuantity());
+            if (planning[machine][job][0] > 0)
+                if (machine < instance.getNbM1()) {
+                    stocks[machine].add(instance.getJob(planning[machine][job][0] - 1).getQuantity());
+                    if (!stocks[machine].isValid()) return false;
+                } else
+                    stocks[machine - instance.getNbM1()].remove(-instance.getJob(planning[machine][job][0] - 1).getQuantity());
 
             indexMachine[machine]++;
             end = true;

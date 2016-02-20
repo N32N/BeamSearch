@@ -2,7 +2,7 @@ package Tests;
 import Resolution.Solver;
 import Solution.*;
 import Instance.Instance;
-import com.sun.org.apache.xpath.internal.SourceTree;
+import Solution.Planning;
 
 /**
  * Created by n on 09/02/16.
@@ -10,18 +10,13 @@ import com.sun.org.apache.xpath.internal.SourceTree;
 public class PlanningTest {
 
     public static void main(String[] args) {
-        Solution s = new Solution(new Instance());
-        s.addJob(new ScheduledJob(s.getInstance().getJob(1), s.getLastJobFirstFloor(1).getNext()), 1, 1);
-        s.addJob(new ScheduledJob(s.getInstance().getJob(1), s.getLastJobSecondFloor(2).getNext()), 2, 2);
-        Planning test = new Planning(new Instance(), s);
-        test.print();
-
-
-        System.out.println("----");
-
-
-        Solver solver = new Solver(new Instance("3M_5F.txt"));
+        Instance in = new Instance("known.txt");
+        Solver solver = new Solver(in);
         Solution sol = solver.firstSolution();
-        sol.printPlanning();
+        Planning p = new Planning(in, sol);
+
+        sol.print();
+        System.out.printf("allJobOk : "+p.allJobOk());
+        //sol.printPlanning();
     }
 }
