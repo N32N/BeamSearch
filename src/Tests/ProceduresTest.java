@@ -10,10 +10,12 @@ import java.util.Arrays;
  */
 public class ProceduresTest {
     public static void main(String[] args) {
-        Solver solver = new Solver(new Instance("3M_5F.txt"));
+        Solver solver = new Solver(new Instance("known.txt"));
         Solution mere = solver.firstSolution();
 
-        System.out.println("TEST de RANDOM");
+        mere.print();
+
+        /*System.out.println("TEST de RANDOM");
         Solution[] listSol = Procedures.random(mere);
         mere.printShort();
         Arrays.sort(listSol, new SolutionComparator());
@@ -23,6 +25,6 @@ public class ProceduresTest {
         Solution[] list = Procedures.bmp(mere);
         mere.printShort();
         Arrays.sort(list, new SolutionComparator());
-        list[0].printShort();
+        list[0].printShort();*/
     }
 }
