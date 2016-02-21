@@ -15,7 +15,7 @@ public class ProceduresTest {
 
         mere.print();
 
-        /*System.out.println("TEST de RANDOM");
+       /* System.out.println("TEST de RANDOM");
         Solution[] listSol = Procedures.random(mere);
         mere.printShort();
         Arrays.sort(listSol, new SolutionComparator());
@@ -26,5 +26,11 @@ public class ProceduresTest {
         mere.printShort();
         Arrays.sort(list, new SolutionComparator());
         list[0].printShort();*/
+
+        System.out.println("TEST de NEH");
+        Solution[] list = Procedures.neh(mere, 2);
+        mere.printShort();
+        Arrays.sort(list, new SolutionComparator());
+        list[0].printShort();
     }
 }

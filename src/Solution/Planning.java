@@ -244,8 +244,15 @@ public class Planning {
         int[] ret = new int[2];
         int line = 0;
         while (line < planning[machine].length && planning[machine][line][0] != 0) line++;
-        ret[0] = planning[machine][line - 1][2];
-        ret[1] = line;
+        if(line == 0){
+            ret[0] = 0;
+            ret[0] = 0;
+        }
+        else {
+            ret[0] = planning[machine][line - 1][2];
+            ret[1] = line;
+        }
+
         return ret;
     }
 }

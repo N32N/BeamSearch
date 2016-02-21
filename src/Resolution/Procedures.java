@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public final class Procedures {
 
     public static Solution[] random(Solution mere) {
-        int nbSwaps =  (mere.getInstance().getNbJob() / 10) + 1;
+        int nbSwaps = (mere.getInstance().getNbJob() / 10) + 1;
         Solution[] solutions = new Solution[nbSwaps];
         int i = 0;
         while (i < nbSwaps) {
@@ -54,15 +54,51 @@ public final class Procedures {
      * @return
      */
     public static Solution[] neh(Solution mere) {
-        return neh(mere, 2);
+        return neh(mere, 1);
     }
 
+    /**
+     * Prend chaque job, le place à tout les emplacements sur l'ordonnancement avant sa position actuelle (autres machines notamment)
+     * Commence au deuxième job de l'ordo et fini au dernier job
+     *
+     * @param mere
+     * @param stage
+     * @return
+     */
     public static Solution[] neh(Solution mere, int stage) {
+        ArrayList<Solution> solutions = new ArrayList<>();
         ScheduledJob currentJob;
-        if (stage == 1) currentJob = mere.getFirst();
-        else currentJob = mere.getSecond();
+        if (stage == 1) {
+            currentJob = mere.getFirst();
+        } else {
+            currentJob = mere.getSecond();
+        }
+        while (currentJob != null) {
+            if (currentJob.getNumber() > 0) {//tout les jobs
+                Solution fille = mere.clone();
+                ScheduledJob[] scheduledJobs = fille.getFirstScheduledJobs(stage);
+                int previousJobNumber = fille.getScheduledJobAndPrevious(currentJob.getNumber(), stage)[0].getNumber();
+                ScheduledJob job = fille.removeJob(currentJob.getNumber(), stage);
+                while (scheduledJobs[0].getNumber() != previousJobNumber) {
+                    fille.insertAfter(scheduledJobs[0],job);
 
-        return null;
+                    Solution s = fille.clone();
+                    s.set();
+                    if (s.isValid()) {
+                        solutions.add(s);
+                    }
+
+
+                    fille.remove(scheduledJobs[0],job);
+                    scheduledJobs[0] = scheduledJobs[0].getNext();
+                    scheduledJobs[1] = scheduledJobs[1].getNext();
+                }
+
+
+            }
+            currentJob = currentJob.getNext();
+        }
+        return tab(solutions);
     }
 
     /**
@@ -80,10 +116,12 @@ public final class Procedures {
         ArrayList<Solution> list = new ArrayList<>();
         int busiest = mere.getBusiestMachine(stage);
         ScheduledJob p, c;
-        if (busiest == 1) {
+        if (busiest == 0) {
             if (stage == 1) p = mere.getFirst();
             else p = mere.getSecond();
-        } else p = mere.getLastJob(busiest - 1, stage).getNext();
+        } else {
+            p = mere.getLastJob(busiest - 1, stage).getNext();
+        }
         c = p.getNext();
         while (c.getNumber() > 0) {
             p.setNext(c.getNext());
@@ -120,8 +158,7 @@ public final class Procedures {
                 if (null != current.getNext()) {
                     pair = fille.getScheduledJobAndPrevious(current.getNext().getNumber(), stage);
                     pair[0].setNext(new ScheduledJob(j, pair[1]));
-                }
-                else{
+                } else {
                     pair = fille.getScheduledJobAndPrevious(current.getNumber(), stage);
                     pair[1].setNext(new ScheduledJob(j, null));
                 }

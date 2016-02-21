@@ -20,14 +20,24 @@ public class BeamTest {
         System.out.println("FIRSTSOL");
         sol.print();
 
-        b.procedure("random", 2000);
+        b.procedure("random", 200);
         System.out.println("-------------------Apr�s random-----------------------");
         b.print();
-        b.procedure("bmp", 20);
+        b.procedure("bmp", 200);
         System.out.println("----------------------Apr�s bmp--------------------------");
-        //b.print();
+        b.print();
+        b.procedure("neh", 200);
+        System.out.println("----------------------Apr�s neh--------------------------");
+        b.print();
+
+        b.procedure("random", 200);
+        b.procedure("bmp", 200);
+        b.procedure("neh", 200);
+        b.procedure("random", 200);
+        b.procedure("bmp", 200);
+        b.procedure("neh", 200);
         System.out.println("---------------------Best solution---------------------------");
-        //b.bestSolution().printPlanning();
+        b.bestSolution().printPlanning();
 
     }
 }

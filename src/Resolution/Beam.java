@@ -62,8 +62,16 @@ public class Beam {
                     throw new Exception("La solution " + i + " du beam n'est pas valide");
             }
             Arrays.sort(differentSolutions, new SolutionComparator());
-            for (int i = 0; i < B; i++)
-                this.beam[i] = differentSolutions[i];
+            try {
+                for (int i = 0; i < B; i++)
+                    this.beam[i] = differentSolutions[i];
+            }catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Only " + differentSolutions.length + " different valid solutions in the beam of length " + this.beam.length);
+                for(int i=0; i<B; i++){
+                    System.err.print("Sol "+i+" : "+this.beam[i].getCost()+" ---");
+                }
+                System.err.println();
+            }
 
             this.potential.clear();
         } catch (Exception e) {
@@ -81,7 +89,9 @@ public class Beam {
 
     public void print() {
         System.out.println("Le BEAM contient actuellement :");
-        for (int s = 0; s < beam.length; s++)
+        for (int s = 0; s < beam.length; s++) {
+            System.out.print(s);
             beam[s].printShort();
+        }
     }
 }

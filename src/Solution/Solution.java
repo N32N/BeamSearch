@@ -257,4 +257,30 @@ public class Solution {
                         return false;
         return true;
     }
+    public ScheduledJob remove(ScheduledJob previousJob,ScheduledJob job){
+        previousJob.setNext(job.getNext());
+        job.setNext(null);
+        return job;
+    }
+    public ScheduledJob removeJob(int job, int stage){
+        ScheduledJob[] jobs = getScheduledJobAndPrevious(job, stage);
+        return remove(jobs[0], jobs[1]);
+    }
+    public void insertAfter(ScheduledJob job, ScheduledJob jobToInsert){
+        ScheduledJob previousNext = job.getNext();
+        jobToInsert.setNext(previousNext);
+        job.setNext(jobToInsert);
+    }
+    public ScheduledJob[] getFirstScheduledJobs(int stage){
+        ScheduledJob[] jobs = new ScheduledJob[2];
+        if(stage ==1 ){
+            jobs[0] = this.first;
+            jobs[1] = this.first.getNext();
+        }
+        else {
+            jobs[0] = this.second;
+            jobs[1] = this.second.getNext();
+        }
+        return jobs;
+    }
 }
