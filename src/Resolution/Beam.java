@@ -20,9 +20,40 @@ public class Beam {
         this.potential = new ArrayList<Solution>();
     }
 
+    public void procedureSet(int iteration) {
+        for (int i = 0; i < iteration; i++) {
+            System.out.println("Iteration "+i+" on "+iteration+".");
+            for (int j = 0; j < B; j++) {
+                for (Solution fille : Procedures.random(beam[j].clone()))
+                    potential.add(fille);
+                select();
+            }
+            for (int j = 0; j < B; j++) {
+                for (Solution fille : Procedures.bmp(beam[j].clone(), 1))
+                    potential.add(fille);
+                select();
+            }
+            for (int j = 0; j < B; j++) {
+                for (Solution fille : Procedures.neh(beam[j].clone()))
+                    potential.add(fille);
+                select();
+            }
+            for (int j = 0; j < B; j++) {
+                for (Solution fille : Procedures.bmp(beam[j].clone()))
+                    potential.add(fille);
+                select();
+            }
+            for (int j = 0; j < B; j++) {
+                for (Solution fille : Procedures.neh(beam[j].clone()))
+                    potential.add(fille);
+                select();
+            }
+        }
+    }
+
     public void procedure(String procedure, int iteration) {
         for (int i = 0; i < iteration; i++)
-            for (int j = 0; j < B; j++){
+            for (int j = 0; j < B; j++) {
                 if (procedure == "random")
                     for (Solution fille : Procedures.random(beam[j].clone()))
                         potential.add(fille);  //VERIFIER que le tableau est généré une seule fois
@@ -32,7 +63,7 @@ public class Beam {
                 else if (procedure == "bmp")
                     for (Solution fille : Procedures.bmp(beam[j].clone()))
                         potential.add(fille);   //idem
-            select();
+                select();
             }
     }
 
@@ -65,10 +96,10 @@ public class Beam {
             try {
                 for (int i = 0; i < B; i++)
                     this.beam[i] = differentSolutions[i];
-            }catch (ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println("Only " + differentSolutions.length + " different valid solutions in the beam of length " + this.beam.length);
-                for(int i=0; i<B; i++){
-                    System.err.print("Sol "+i+" : "+this.beam[i].getCost()+" ---");
+                for (int i = 0; i < B; i++) {
+                    System.err.print("Sol " + i + " : " + this.beam[i].getCost() + " ---");
                 }
                 System.err.println();
             }
@@ -83,7 +114,7 @@ public class Beam {
      * @return the best solution from the beam
      */
     public Solution bestSolution() {
-        beam[0].printShort();
+        beam[0].print();
         return beam[0];
     }
 
