@@ -149,7 +149,7 @@ public class Solution {
         int end = 0;
         for (int machine = 1; machine <= nbM; machine++) {
             int e = getEndUse(stage, machine);
-            if (e > end) {
+            if (e >= end) {
                 end = e;
                 busiest = machine;
             }
@@ -206,6 +206,13 @@ public class Solution {
             newSolSecond.setNext(new ScheduledJob(currentSecond.getNext()));
             newSolSecond = newSolSecond.getNext();
             currentSecond = currentSecond.getNext();
+        }
+
+        clone.machineUse = new int[machineUse.length][3];
+        for (int m = 0; m < machineUse.length; m++) {
+            clone.machineUse[m][0] = machineUse[m][0];
+            clone.machineUse[m][1] = machineUse[m][1];
+            clone.machineUse[m][2] = machineUse[m][2];
         }
 
         clone.cost = cost;

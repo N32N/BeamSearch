@@ -12,30 +12,30 @@ public class BeamTest {
 
     public static void main(String[] args) {
 
-        Instance i = new Instance("known.txt");
+        Instance i = new Instance("3M_5F.txt");
         Solver s = new Solver(i);
         Solution sol = s.firstSolution();
-        Beam b = new Beam(5, sol);
+        Beam b = new Beam(100, sol);
 
         System.out.println("FIRSTSOL");
         sol.print();
 
-        b.procedure("random", 200);
+        b.procedure("random", 20);
         System.out.println("-------------------Apr�s random-----------------------");
         b.print();
-        b.procedure("bmp", 200);
+        b.procedure("bmp", 20);
         System.out.println("----------------------Apr�s bmp--------------------------");
         b.print();
-        b.procedure("neh", 200);
+        b.procedure("neh", 20);
         System.out.println("----------------------Apr�s neh--------------------------");
         b.print();
 
-        b.procedure("random", 200);
+        /*b.procedure("random", 200);
         b.procedure("bmp", 200);
         b.procedure("neh", 200);
         b.procedure("random", 200);
         b.procedure("bmp", 200);
-        b.procedure("neh", 200);
+        b.procedure("neh", 200);*/
         System.out.println("---------------------Best solution---------------------------");
         b.bestSolution().printPlanning();
 

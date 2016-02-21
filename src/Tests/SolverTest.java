@@ -11,11 +11,12 @@ public class SolverTest {
 
     public static void main(String[] args){
         Solver s = new Solver(new Instance("known.txt"));
-        s.solve(5);
         Solution first = s.firstSolution();
+        s.solve(5);
         Solution best = s.getSolution();
         System.out.println("FIRST");
         first.printShort();
+        //first.printPlanning();
         System.out.println("BEST");
         best.printShort();
         /*Solution solution = s.firstSolution();
