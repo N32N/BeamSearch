@@ -12,25 +12,27 @@ public class ProceduresTest {
     public static void main(String[] args) {
         Solver solver = new Solver(new Instance("known.txt"));
         Solution mere = solver.firstSolution();
-
         mere.print();
+        Tneh(mere);
+    }
 
-       /* System.out.println("TEST de RANDOM");
+    public static void Tr(Solution mere){
+        System.out.println("TEST de RANDOM");
         Solution[] listSol = Procedures.random(mere);
-        mere.printShort();
         Arrays.sort(listSol, new SolutionComparator());
-        listSol[0].printShort();
+        for(Solution s : listSol)s.printShort();
+    }
 
+    public static void Tneh(Solution mere){
+        System.out.println("TEST de NEH");
+        Solution[] list = Procedures.neh(mere);
+        Arrays.sort(list, new SolutionComparator());
+        for(Solution s: list)s.printShort();
+    }
+
+    public static void Tbmp(Solution mere){
         System.out.println("TEST de BMP");
         Solution[] list = Procedures.bmp(mere);
-        mere.printShort();
         Arrays.sort(list, new SolutionComparator());
-        list[0].printShort();*/
-
-        System.out.println("TEST de NEH");
-        Solution[] list = Procedures.neh(mere, 2);
-        mere.printShort();
-        Arrays.sort(list, new SolutionComparator());
-        list[0].printShort();
-    }
+        for(Solution s : list)s.printShort();    }
 }
