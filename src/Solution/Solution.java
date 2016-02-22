@@ -5,18 +5,21 @@ import Instance.*;
 import java.util.ArrayList;
 
 /**
+ * Stores a solution as two job sequences (one by stage).
+ * If the first sequence is / -1 / 1 / 2 / 3 / -2 / 4 / 5, it means : Machine 1 : 1, 2, 3 ; Machine 2 : 4, 5.
  * Created by n on 08/02/16.
  */
 public class Solution {
     private Instance instance;
-    private ScheduledJob first;
-    private ScheduledJob second;
+    private ScheduledJob first;         // First floor's sequence
+    private ScheduledJob second;        // Second floor sequence
     private long cost;
     private boolean isValid;
-    private int[][] machineUse;       //[nbMachines][3] : first job start / last job end / number oj jobs
+    private int[][] machineUse;        //[nbMachines][3] : first job start / last job end / number oj jobs
 
     /**
-     * Cr�e un planning � partir de la solution actuelle, afin de d�terminer la validit� de la solution et son co�t.
+     * Creates a planning from the solution, and sets Solution's ( Cost, Validity, and MachineUse )
+     * Always to be called when a solution has been created / modified
      */
     public void set() {
         Planning planning = new Planning(instance, this);
@@ -31,13 +34,10 @@ public class Solution {
         }
     }
 
-    public void setCost(long c) {
-        this.cost = c;
-    }
-
     public long getCost() {
         return cost;
     }
+
     public boolean isValid() {
         return this.isValid;
     }
@@ -54,16 +54,13 @@ public class Solution {
         return second;
     }
 
-    public int getStartUse(int stage, int machine) {
-        return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][0];
-    }
-
+    /**
+     * @param stage
+     * @param machine
+     * @return the time when the "machine" has finished working at stage "stage"
+     */
     public int getEndUse(int stage, int machine) {
         return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][1];
-    }
-
-    public int getNbJob(int stage, int machine) {
-        return machineUse[machine - 1 + (stage - 1) * instance.getNbM1()][2];
     }
 
     public Solution(Instance instance) {
@@ -112,34 +109,23 @@ public class Solution {
     }
 
     public void addJob(ScheduledJob job, int stage, int machine) {
-        if (stage == 1) {
-            ScheduledJob last = getLastJobFirstFloor(machine);
-            job.setNext(last.getNext());
-            last.setNext(job);
-        }
-        if (stage == 2) {
-            ScheduledJob last = getLastJobSecondFloor(machine);
-            job.setNext(last.getNext());
-            last.setNext(job);
-        }
+        ScheduledJob last;
+        if (stage == 1)  last = getLastJobFirstFloor(machine);
+        else             last = getLastJobSecondFloor(machine);
+        job.setNext(last.getNext());
+        last.setNext(job);
     }
 
     public void addJob(Job job, int stage, int machine) {
-        if (stage == 1) {
-            ScheduledJob last = getLastJobFirstFloor(machine);
-            last.setNext(new ScheduledJob(job, last.getNext()));
-        }
-        if (stage == 2) {
-            ScheduledJob last = getLastJobSecondFloor(machine);
-            last.setNext(new ScheduledJob(job, last.getNext()));
-        }
+        ScheduledJob last;
+        if (stage == 1)  last = getLastJobFirstFloor(machine);
+        else             last = getLastJobSecondFloor(machine);
+        last.setNext(new ScheduledJob(job, last.getNext()));
     }
 
     /**
-     * Retourne la machine finissant de produire le plus tôt.
-     *
      * @param stage
-     * @return
+     * @return the machine which end time is the biggest
      */
     public int getBusiestMachine(int stage) {
         int nbM;
@@ -188,12 +174,12 @@ public class Solution {
         p.print();
     }
 
-    public Solution clone() {   //Create new ScheduledJobs (based on same jobs) and chains them
+    public Solution clone() {
         Solution clone = new Solution(instance);
         ScheduledJob current = this.first;
         ScheduledJob newSol = new ScheduledJob(this.first);
         clone.first = newSol;
-        while (current.getNext() != null) {//stage 1
+        while (current.getNext() != null) {
             newSol.setNext(new ScheduledJob(current.getNext()));
             newSol = newSol.getNext();
             current = current.getNext();
@@ -235,13 +221,13 @@ public class Solution {
         jobs2[1].setNext(s);
     }
 
-    public ScheduledJob[] getScheduledJobAndPrevious(int job, int stage) {
+    public ScheduledJob[] getScheduledJobAndPrevious(int jobNumber, int stage) {
         ScheduledJob[] jobs = new ScheduledJob[2];
         ScheduledJob previous = null;
         ScheduledJob current;
         if (stage == 1) current = this.first;
-        else current = this.second;
-        while (current.getNumber() != job) {
+        else            current = this.second;
+        while (current.getNumber() != jobNumber) {
             previous = current;
             current = current.getNext();
         }
@@ -249,6 +235,7 @@ public class Solution {
         jobs[1] = current;
         return jobs;
     }
+
     public boolean isNotIn(ArrayList<Solution> allSolution){
         for(Solution sol:allSolution)
             if(equals(sol)) return false;
@@ -264,20 +251,28 @@ public class Solution {
                         return false;
         return true;
     }
+
     public ScheduledJob remove(ScheduledJob previousJob,ScheduledJob job){
         previousJob.setNext(job.getNext());
         job.setNext(null);
         return job;
     }
+
     public ScheduledJob removeJob(int job, int stage){
         ScheduledJob[] jobs = getScheduledJobAndPrevious(job, stage);
         return remove(jobs[0], jobs[1]);
     }
+
     public void insertAfter(ScheduledJob job, ScheduledJob jobToInsert){
         ScheduledJob previousNext = job.getNext();
         jobToInsert.setNext(previousNext);
         job.setNext(jobToInsert);
     }
+
+    /**
+     * @param stage
+     * @return the 2 first scheduled jobs of the solution at stage "stage"
+     */
     public ScheduledJob[] getFirstScheduledJobs(int stage){
         ScheduledJob[] jobs = new ScheduledJob[2];
         if(stage ==1 ){

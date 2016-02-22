@@ -1,6 +1,7 @@
 package Solution;
 
 /**
+ * Scheduled Jobs, but to represent the machines
  * Created by n on 08/02/16.
  */
 public class Mark extends ScheduledJob {

@@ -10,7 +10,7 @@ public class Stock {
     private int[] cap;
 
     /**
-     * Stocks of 1 machine at 2nd floor, ordered by product Type
+     * Stocks of 1 machine at 2nd floor : three containers with capacities
      * @param instance
      * @param cap
      */
@@ -71,6 +71,10 @@ public class Stock {
         }
     }
 
+    /**
+     * Adds one order (with its quantity) in the stocks
+     * @param quantity
+     */
     public void add (int quantity){
         boolean added = false;
         int i = 0;
@@ -83,6 +87,10 @@ public class Stock {
         }
     }
 
+    /**
+     * Removes the order with that quantity from the stocks
+     * @param quantity
+     */
     public void remove (int quantity){
         boolean removed = false;
         int i = 0;
@@ -95,6 +103,12 @@ public class Stock {
         }
     }
 
+    /**
+     * Modifies "st" so as to obtain st[a] <= st[b]
+     * @param st
+     * @param a
+     * @param b
+     */
     public static void order(int[] st, int a, int b){
         if(st[b]<st[a]){
             int loc = st[b];

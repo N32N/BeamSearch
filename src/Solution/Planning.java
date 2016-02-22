@@ -3,6 +3,7 @@ package Solution;
 import Instance.*;
 
 /**
+ * The solution is built, with the notion of TIME
  * Created by n on 08/02/16.
  */
 public class Planning {
@@ -21,7 +22,7 @@ public class Planning {
         int machine = 0;
         int time = 0;
         int line = 0;
-        while (null != currentFirst) {         //Tant qu'on a pas fait chaque scheduledJob du premier étage, on continue à lire
+        while (null != currentFirst) {                  //Tant qu'on a pas fait chaque scheduledJob du premier étage, on continue à lire
             if (currentFirst.getNumber() < 0) {         //Si le job est un marqueur pour une machine
                 machine = -currentFirst.getNumber();    //On change la machine actuelle
                 line = 0;
@@ -29,11 +30,11 @@ public class Planning {
             } else {                                    //Si le scheduledJob est un Job
                 planning[machine - 1][line][0] = currentFirst.getNumber();//On ajoute le job au planning, à la ligne suivante
                 planning[machine - 1][line][1] = time;  //Date de lancement de productiondu job
-                time += currentFirst.getQuantity();     //ajout processTime de currentFirst sur machine
+                time += currentFirst.getQuantity();     //Ajout processTime de currentFirst sur machine
                 planning[machine - 1][line][2] = time;  //Date de fin de production du job
                 if (null != nextFirst && nextFirst.getNumber() > 0) {
                     time += instance.getSetupTime(1, machine - 1) * instance.getSetUp(currentFirst.getProduct(), nextFirst.getProduct());
-                    //ajout setUpTime entre currentFirst et nextFirst sur machine
+                                                        //Ajout setUpTime entre currentFirst et nextFirst sur machine
                     if (time > fin) fin = time;
                     line++;
                 }
@@ -54,8 +55,8 @@ public class Planning {
                 time = 0;
             } else {
                 planning[instance.getNbM1() + machine - 1][line][0] = currentSecond.getNumber();
-                int release = this.readPlanning(currentSecond.getNumber(), 1, false);//Date à partir de laquelle le job est produit(fin) au premier étage
-                if (time < release) time = release;//Vérification de la release à l'étage précédent
+                int release = this.readPlanning(currentSecond.getNumber(), 1, false);       //Date à partir de laquelle le job est produit(fin) au premier étage
+                if (time < release) time = release;                                         //Vérification de la release à l'étage précédent
                 planning[instance.getNbM1() + machine - 1][line][1] = time;
                 time += currentSecond.getQuantity() * instance.getDuration(machine - 1, currentSecond.getType()); //ajout processTime de currentSecond sur machine
                 planning[instance.getNbM1() + machine - 1][line][2] = time;
@@ -63,7 +64,8 @@ public class Planning {
                 if (late < 0) late = 0;
                 lateTime += late;
                 if (null != nextSecond && nextSecond.getNumber() > 0)
-                    time += instance.getSetupTime(2, machine - 1) * instance.getSetUp(currentSecond.getProduct(), nextSecond.getProduct()); //ajout setUpTime entre currentSecond et nextSecond sur machine -- !!! si nextSecond est null !!!
+                    time += instance.getSetupTime(2, machine - 1) * instance.getSetUp(currentSecond.getProduct(), nextSecond.getProduct());
+                                                                                            //Ajout setUpTime entre currentSecond et nextSecond sur machine -- !!! si nextSecond est null !!!
                 if (time > fin) fin = time;
                 line++;
             }
@@ -72,6 +74,12 @@ public class Planning {
         }
     }
 
+    /**
+     * @param jobNumber
+     * @param stage
+     * @param start = true if we when the start time
+     * @return the TIME when the job starts/ends on stage "stage"
+     */
     public int readPlanning(int jobNumber, int stage, boolean start) {
         stage--;
         for (int indexMachine = stage * instance.getNbM1(); indexMachine < instance.getNbM1() + stage * instance.getNbM2(); indexMachine++) {
@@ -110,9 +118,7 @@ public class Planning {
     }
 
     /**
-     * Vérifie la validité de la solution à partir du planning. vérifie notamment les stocks et les contraintes.
-     * A voir après les procédures
-     *
+     * Checks the validity of the planning (and the solution)
      * @return
      */
     public boolean isValid() {
