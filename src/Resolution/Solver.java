@@ -46,22 +46,7 @@ public class Solver {
      */
     public Solution beamSearch(int beamValue) {
         Beam beam = new Beam(beamValue, solution);
-        beam.procedure("random", 5);
-        beam.procedure("neh", 32);
-        beam.procedure("bmp", 32);
-       /* beam.procedure("random", 5);
-        beam.procedure("neh", 32);
-        beam.procedure("bmp", 32);
-        beam.procedure("random", 5);
-        beam.procedure("neh", 32);
-        beam.procedure("bmp", 32);
-        beam.procedure("random", 5);
-        beam.procedure("neh", 32);
-        beam.procedure("bmp", 32);
-        beam.procedure("random", 50);
-        beam.procedure("neh", 320);
-        beam.procedure("bmp", 320);*/
-
+        beam.procedureSet(32);
         return beam.bestSolution();
     }
 
