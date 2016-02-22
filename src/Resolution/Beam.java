@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ *Contient les meilleures solutions, qui sont actualisées avec les solutions données par les procédures
  * Created by n on 08/02/16.
  */
 public class Beam {
@@ -20,6 +21,10 @@ public class Beam {
         this.potential = new ArrayList<Solution>();
     }
 
+    /**
+     * Effectue à chaque itération chaque procédure sur chaque solution du beam
+     * @param iteration
+     */
     public void procedureSet(int iteration) {
         for (int i = 0; i < iteration; i++) {
             System.out.println("Iteration "+i+" on "+iteration+".");

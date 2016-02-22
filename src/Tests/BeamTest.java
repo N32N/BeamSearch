@@ -18,10 +18,10 @@ public class BeamTest {
     }
 
     public static Beam set(){
-        Instance i = new Instance("unknown.txt");
+        Instance i = new Instance("3M_5F.txt");
         Solver s = new Solver(i);
         Solution sol = s.firstSolution();
-        Beam b = new Beam(100, sol);
+        Beam b = new Beam(20, sol);
 
         System.out.println("FIRSTSOL");
         sol.print();
@@ -31,6 +31,7 @@ public class BeamTest {
     public static void testPSet(Beam b){
         b.procedureSet(20);
         b.print();
+        b.bestSolution();
     }
 
     public static void testLourd(Beam b){

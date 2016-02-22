@@ -173,7 +173,7 @@ public class Instance {
     }
 
     /**
-     * Instance aléatoire
+     * Génère une instance aléatoire à partir d'un nombre restreint de paramètres
      *
      * @param M       : number at first floor
      * @param F       : number at second floor
