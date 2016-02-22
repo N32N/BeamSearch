@@ -14,27 +14,21 @@ public class Instance {
     private String fileName;
 
     //--------------------Donn�es du probl�me-----------------------
-    private int nbM1;//nb de machines nbM1
-    private int nbM2;//nb de machines nbM2
-    private int nbJob;//nb de commandes
-    private int nbProd;//nb de produits
-    private int nbTypes;//nb de types
+    private int nbM1;                   //nb de machines nbM1
+    private int nbM2;                   //nb de machines nbM2
+    private int nbJob;                  //nb de commandes
+    private int nbProd;                 //nb de produits
+    private int nbTypes;                //nb de types
     private int coutProd;
     private int coutPenalite;
-
-    int[][] setUp;//nbProd*nbProd, setUp[i][j]=1 si il faut un set-up entre le produit i et le produit j (i avant, j apr�s)
-    double[][] duration;//nbM2*nbTypes, �gal � (1 / vitesse de production de la machine f pour le type t), donc Tprocess=quantity*duration.
-    int[] setUpTimeM;//nbM1, �gal au temps de set-up de la machine m
-    int[] setUpTimeF;//nbM2, �gal au temps de set-up de la machine f
-    Job[] jobs;//nbJob, Liste des jobs alias commandes
-
-    int[][] stockCapa; //nbM2*3, capacité des stocks par machine F -- ordonnées par ordre croissant
+    int[][] setUp;                      //nbProd*nbProd, setUp[i][j]=1 si il faut un set-up entre le produit i et le produit j (i avant, j apr�s)
+    double[][] duration;                //nbM2*nbTypes, �gal � (1 / vitesse de production de la machine f pour le type t), donc Tprocess=quantity*duration.
+    int[] setUpTimeM;                   //nbM1, �gal au temps de set-up de la machine m
+    int[] setUpTimeF;                   //nbM2, �gal au temps de set-up de la machine f
+    Job[] jobs;                         //nbJob, Liste des jobs alias commandes
+    int[][] stockCapa;                  //nbM2*3, capacité des stocks par machine F -- ordonnées par ordre croissant
 
     //----------------------Accesseurs----------------------------
-    public String getFileName() {
-        return fileName;
-    }
-
     public int getNbM1() {
         return nbM1;
     }
@@ -45,14 +39,6 @@ public class Instance {
 
     public int getNbJob() {
         return nbJob;
-    }
-
-    public int getNbProd() {
-        return nbProd;
-    }
-
-    public int getNbTypes() {
-        return nbTypes;
     }
 
     public int[][] getSetUp() {
@@ -109,7 +95,6 @@ public class Instance {
 
     /**
      * From a file
-     *
      * @param fName
      * @throws IOException
      */
@@ -173,8 +158,7 @@ public class Instance {
     }
 
     /**
-     * Génère une instance aléatoire à partir d'un nombre restreint de paramètres
-     *
+     * Random instance
      * @param M       : number at first floor
      * @param F       : number at second floor
      * @param nbJob

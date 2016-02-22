@@ -9,9 +9,10 @@ import java.util.Comparator;
  */
 public class SolutionComparator implements Comparator<Solution> {
 
-    @Override
     /**
-     * return the difference (sol1.cost - sol2.cost)
+     * @param sol1
+     * @param sol2
+     * @return the difference (sol1.cost - sol2.cost)
      */
     public int compare(Solution sol1, Solution sol2){
         return (int) (sol1.getCost() - sol2.getCost());

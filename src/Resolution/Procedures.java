@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by n on 08/02/16.
- * Ne retourne que des solutions valides.
+ * Ne retourne que des solutions valides, sous forme de tableau, Ã  partir d'une solution mÃ¨re
  */
 public final class Procedures {
 
@@ -27,37 +27,9 @@ public final class Procedures {
         return solutions;
     }
 
-    public static Solution[] randomSwitch(Solution mere) {
-        int nbJobsToSwitch = 2 * ((int) (mere.getInstance().getNbJob() / 10) + 1);//Nombre pair de job, >= 2
-        int[] listJobs = new int[nbJobsToSwitch];
-        for (int i = 0; i < nbJobsToSwitch / 2; i++) {
-            listJobs[i] = (int) (Math.random() * mere.getInstance().getNbJob()) + 1;
-            int secondJob = listJobs[i];
-            while (secondJob == listJobs[i]) {
-                secondJob = (int) (Math.random() * mere.getInstance().getNbJob()) + 1;
-            }
-            listJobs[i + 1] = secondJob;
-        }
-        //On a une liste pair de job tous diff?rents
-        int nbSolutions = nbJobsToSwitch * (nbJobsToSwitch - 1) / 2;
-        for (int i = 0; i < nbJobsToSwitch - 1; i++) {
-            for (int j = i + 1; j < nbJobsToSwitch; j++) {
-
-            }
-        }
-        return new Solution[1];
-    }
-
-
-    /**
-     * @param mere
-     * @return
-     */
-    public static Solution[] neh(Solution mere) {
+   public static Solution[] neh(Solution mere) {
         Solution[] stage1 = neh(mere, 1);
         Solution[] stage2 = neh(mere, 2);
-
-        //TODO
 
         Solution[] all = new Solution[stage1.length+stage2.length];
         for(int i=0; i<stage1.length; i++){
@@ -70,9 +42,8 @@ public final class Procedures {
     }
 
     /**
-     * Prend chaque job, le place à tout les emplacements sur l'ordonnancement avant sa position actuelle (autres machines notamment)
-     * Commence au deuxième job de l'ordo et fini au dernier job
-     *
+     * Prend chaque job, le place ï¿½ tout les emplacements sur l'ordonnancement avant sa position actuelle (autres machines notamment)
+     * Commence au deuxiï¿½me job de l'ordo et fini au dernier job
      * @param mere
      * @param stage
      * @return
@@ -108,7 +79,6 @@ public final class Procedures {
     /**
      * Selectionne un job dans une des machines les plus utilis?e. Le place sur une des autres machine
      * Si 1 seule machine au niveau 1, ne s'?x?cute que pour le niveau 2
-     *
      * @param mere
      * @return
      */
@@ -141,7 +111,6 @@ public final class Procedures {
     /**
      * Add every valid solution created in result
      * creates solutions by puting "j" at every possible spot in the stage "stage" of "missOneJob" except on machine "busiest"
-     *
      * @param j
      * @param missOneJob
      * @param busiest

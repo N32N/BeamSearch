@@ -1,7 +1,6 @@
 package Instance;
 
 /**
- *
  * Created by n on 08/02/16.
  */
 public class Job {
@@ -23,40 +22,20 @@ public class Job {
         return type;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public int getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(int dueDate) {
-        this.dueDate = dueDate;
-    }
-
     public int getProduct() {
         return product;
     }
 
-    public void setProduct(int product) {
-        this.product = product;
-    }
-
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     public String getAsString(){

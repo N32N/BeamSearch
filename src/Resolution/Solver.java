@@ -33,7 +33,6 @@ public class Solver {
 
     /**
      * M�thode � appeler depuis la classe Main. Initialise une solution puis lance la beam search, pour retourner la meilleure solution trouv�e
-     *
      * @param beamValue Nombre de solution dans le beam
      */
     public void solve(int beamValue) {
@@ -67,8 +66,7 @@ public class Solver {
     }
 
     /**
-     * firstSolution uses "first", "second", "getMinIndex" to generate a first solution
-     *
+     * firstSolution generates a basic good solution based on EDD
      * @return Solution firstSolution
      */
     public Solution firstSolution() {
