@@ -8,7 +8,7 @@ import Solution.Solution;
 public class Main {
 
     public static void main(String[] arg) {
-        Solver s = new Solver(new Instance("known.txt"));
+        Solver s = new Solver(new Instance("unknown.txt"));
         Solution first = s.firstSolution();
         System.out.println("FIRST SOLUTION");
         first.print();
