@@ -81,9 +81,9 @@ public class Beam {
         for (int i = 0; i < B; i++)
             if (beam[i].isNotIn(allSolutions))
                 allSolutions.add(beam[i]);
-        for (int i = 0; i < this.potential.size(); i++)
-            if (this.potential.get(i).isNotIn(allSolutions))
-                allSolutions.add(this.potential.get(i));
+        for (Solution s : potential)
+            if (s.isNotIn(allSolutions))
+                allSolutions.add(s);
         Solution[] differentSolutions = new Solution[allSolutions.size()];
         int in = 0;
         for (Solution s : allSolutions) {

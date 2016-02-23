@@ -11,7 +11,7 @@ import Solution.Planning;
 public class PlanningTest {
 
     public static void main(String[] args) {
-        Instance in = new Instance("known.txt");
+        Instance in = new Instance("petite.txt");
         Solver solver = new Solver(in);
         Solution sol = solver.firstSolution();
         Planning p = new Planning(in, sol);

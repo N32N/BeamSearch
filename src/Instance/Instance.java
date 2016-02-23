@@ -165,7 +165,7 @@ public class Instance {
      * @param nbProd
      * @param nbTypes
      */
-    public Instance(int M, int F, int nbJob, int nbProd, int nbType, int nbTypes, int coutPenalite) {
+    public Instance(int M, int F, int nbJob, int nbProd, int nbTypes, int coutPenalite) {
         this.nbM1 = M;
         this.nbM2 = F;
         this.nbJob = nbJob;
@@ -178,12 +178,12 @@ public class Instance {
         for (int i = 0; i < nbProd; i++)
             for (int j = 0; j < nbProd; j++)
                 if (i == j) this.setUp[i][j] = 0;
-                else this.setUp[i][j] = (int) Math.random();
+                else this.setUp[i][j] = (int) (2 * Math.random());
 
         this.duration = new double[nbM2][nbTypes];
         for (int i = 0; i < nbM2; i++)
             for (int j = 0; j < nbTypes; j++)
-                this.duration[i][j] = (0.5 + (2 * Math.random()));
+                this.duration[i][j] = (0.5 + Math.random());
 
         this.setUpTimeM = new int[nbM1];
         for (int i = 0; i < nbM1; i++)
@@ -196,7 +196,7 @@ public class Instance {
 
         this.jobs = new Job[nbJob];
         for (int i = 0; i < nbJob; i++)
-            this.jobs[i] = new Job(i+1, (int)(nbProd*Math.random()), (int)(nbTypes*Math.random()), (int)(2+18*Math.random()), (int)(3*i+5*Math.random()));
+            this.jobs[i] = new Job(i+1, (int)(nbProd*Math.random()), (int)(nbTypes*Math.random()), (int)(2+18*Math.random()), (int)((11/nbM1)*i+5*Math.random()));
 
         this.stockCapa = new int[nbM2][3];
         for(int i = 0; i<stockCapa.length; i++){
@@ -372,5 +372,10 @@ public class Instance {
             System.out.println("Le fichier " + fileName + " n'existe pas");
         }
 
+    }
+
+    public static void main(String[] args) {
+        Instance i = new Instance(4, 12, 120, 6, 12, 10);
+        i.write("big.txt");
     }
 }

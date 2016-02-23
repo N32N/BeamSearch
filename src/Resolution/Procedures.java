@@ -15,7 +15,8 @@ public final class Procedures {
         int nbSwaps = (mere.getInstance().getNbJob() / 10) + 1;
         Solution[] solutions = new Solution[nbSwaps];
         int i = 0;
-        while (i < nbSwaps) {
+        int j = 0;
+        while (i < nbSwaps && j < mere.getInstance().getNbJob()) {
             Solution solution = mere.clone();
             solution.swapTwo((int) (Math.random() * mere.getInstance().getNbJob()) + 1, (int) (Math.random() * mere.getInstance().getNbJob()) + 1);
             solution.set();
@@ -23,6 +24,7 @@ public final class Procedures {
                 solutions[i] = solution;
                 i++;
             }
+            j++;
         }
         return solutions;
     }

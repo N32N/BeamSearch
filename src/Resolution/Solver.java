@@ -46,7 +46,7 @@ public class Solver {
      */
     public Solution beamSearch(int beamValue) {
         Beam beam = new Beam(beamValue, solution);
-        beam.procedureSet(32);
+        beam.procedureSet(3);
         return beam.bestSolution();
     }
 

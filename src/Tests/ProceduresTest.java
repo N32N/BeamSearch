@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public class ProceduresTest {
     public static void main(String[] args) {
-        Solver solver = new Solver(new Instance("unknown.txt"));
+        Solver solver = new Solver(new Instance("grande.txt"));
         Solution mere = solver.firstSolution();
         mere.print();
         Tbmp(mere);
