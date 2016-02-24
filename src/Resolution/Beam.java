@@ -28,6 +28,7 @@ public class Beam {
     public void procedureSet(int iteration) {
         for (int i = 0; i < iteration; i++) {
             System.out.println("Iteration "+i+" on "+iteration+".");
+            bestSolution();
             for (int j = 0; j < B; j++) {
                 for (Solution fille : Procedures.random(beam[j].clone()))
                     potential.add(fille);

@@ -8,12 +8,12 @@ import Solution.Solution;
 public class Main {
 
     public static void main(String[] arg) {
-        Solver s = new Solver(new Instance("big.txt"));
+        Solver s = new Solver(new Instance("petite.txt"));
         Solution first = s.firstSolution();
         System.out.println("FIRST SOLUTION");
         first.print();
 
-        s.solve(10);
+        s.solve(100);
         Solution best = s.getSolution();
         best.printPlanning();
     }
